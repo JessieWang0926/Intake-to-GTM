@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo One Slider — Dark Edition</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --bg-page: #050608;
+      --bg-slide: #0c0e18;
+      --surface: #141626;
+      --surface-card: #191c30;
+      --surface-hover: #1e2140;
+      --pink: #e6007e;
+      --pink-soft: rgba(230, 0, 126, 0.15);
+      --pink-glow: rgba(230, 0, 126, 0.3);
+      --violet: #8b5cf6;
+      --violet-soft: rgba(139, 92, 246, 0.15);
+      --blue: #3b82f6;
+      --blue-soft: rgba(59, 130, 246, 0.15);
+      --cyan: #22d3ee;
+      --white: #ffffff;
+      --text: #e4e6f0;
+      --text-mid: #8b90b0;
+      --text-dim: #4a4f6e;
+      --border: #1f2238;
+      --border-card: #252840;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-page);
+      color: var(--text);
+      padding: 48px 20px;
+    }
+
+    .slide-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .slide-wrapper { position: relative; }
+
+    .slide-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .slide {
+      background: var(--bg-slide);
+      border-radius: 12px;
+      box-shadow: 0 16px 64px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════════════════════
+       COVER — Geometric accent design
+       ══════════════════════════════════════════════ */
+    .cover {
+      background:
+        linear-gradient(145deg, rgba(139,92,246,0.08) 0%, transparent 50%),
+        linear-gradient(320deg, rgba(230,0,126,0.06) 0%, transparent 40%),
+        var(--bg-slide);
+      position: relative;
+    }
+
+    /* Decorative corner geometry */
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 55%;
+      height: 120%;
+      background: linear-gradient(135deg, rgba(139,92,246,0.04), rgba(230,0,126,0.03));
+      border-radius: 0 0 0 60%;
+      pointer-events: none;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--violet), var(--blue));
+    }
+
+    .cover-top {
+      padding: 4% 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-top .brand {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text-dim);
+      letter-spacing: 4px;
+    }
+
+    .cover-top .tag {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--pink);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border: 1px solid var(--pink-soft);
+      border-radius: 20px;
+      background: var(--pink-soft);
+    }
+
+    .cover-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 5%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-center .gradient-line {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--pink), var(--violet));
+      border-radius: 2px;
+      margin-bottom: 3%;
+    }
+
+    .cover-center h1 {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -1.5px;
+      margin-bottom: 2%;
+    }
+
+    .cover-center .subtitle {
+      font-size: clamp(14px, 1.5vw, 20px);
+      color: var(--text-mid);
+      font-weight: 400;
+      line-height: 1.55;
+      max-width: 65%;
+    }
+
+    .cover-bottom {
+      padding: 0 5% 3.5%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-bottom .format-hint {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--surface-card);
+      border: 1px solid var(--border-card);
+      border-radius: 10px;
+      max-width: 70%;
+    }
+
+    .cover-bottom .format-hint .arrow {
+      color: var(--pink);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .cover-bottom .format-hint .hint-text {
+      font-size: clamp(11px, 1vw, 14px);
+    }
+
+    .cover-bottom .format-hint strong {
+      color: var(--white);
+    }
+
+    .cover-bottom .format-hint span {
+      color: var(--text-dim);
+    }
+
+    /* ══════════════════════════════════════════════
+       CONTENT SLIDES — Card-based layout
+       ══════════════════════════════════════════════ */
+    .content-slide {
+      background: var(--bg-slide);
+      padding: 0;
+    }
+
+    /* Header strip */
+    .header-strip {
+      padding: 2% 3.5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: relative;
+      background: linear-gradient(135deg, rgba(139,92,246,0.06), rgba(230,0,126,0.04));
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-strip::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--pink), var(--violet));
+    }
+
+    .header-strip .left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-strip h2 {
+      font-size: clamp(16px, 1.8vw, 24px);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+
+    .header-strip .header-sub {
+      font-size: clamp(9px, 0.8vw, 11px);
+      color: var(--text-dim);
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-strip .brand-mark {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+    }
+
+    /* Metric strip — big hero numbers */
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .metric-cell {
+      background: var(--surface);
+      padding: 2.2% 3%;
+      text-align: center;
+    }
+
+    .metric-cell .value {
+      font-size: clamp(22px, 3vw, 40px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric-cell .value.glow {
+      color: var(--pink);
+      text-shadow: 0 0 30px var(--pink-glow);
+    }
+
+    .metric-cell .label {
+      font-size: clamp(8px, 0.7vw, 10px);
+      color: var(--text-mid);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+
+    /* Cards area */
+    .cards-area {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(10px, 1.2%, 16px);
+      padding: clamp(10px, 1.5%, 20px) clamp(12px, 2%, 28px);
+      min-height: 0;
+    }
+
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: clamp(14px, 2%, 24px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .card.card-pink::before { background: var(--pink); }
+    .card.card-violet::before { background: var(--violet); }
+    .card.card-blue::before { background: var(--blue); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: clamp(10px, 2%, 16px);
+      padding-bottom: clamp(8px, 1.5%, 12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-num {
+      width: clamp(22px, 2vw, 28px);
+      height: clamp(22px, 2vw, 28px);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(10px, 0.85vw, 12px);
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+
+    .card-pink .card-num { background: var(--pink); box-shadow: 0 4px 16px var(--pink-soft); }
+    .card-violet .card-num { background: var(--violet); box-shadow: 0 4px 16px var(--violet-soft); }
+    .card-blue .card-num { background: var(--blue); box-shadow: 0 4px 16px var(--blue-soft); }
+
+    .card-title {
+      font-size: clamp(9px, 0.85vw, 12px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .card-pink .card-title { color: var(--pink); }
+    .card-violet .card-title { color: var(--violet); }
+    .card-blue .card-title { color: var(--blue); }
+
+    .card-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1%, 10px);
+      flex: 1;
+    }
+
+    .card-bullet {
+      font-size: clamp(8.5px, 0.8vw, 11px);
+      line-height: 1.5;
+      color: var(--text-mid);
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .card-bullet::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .card-pink .card-bullet::before { background: var(--pink); }
+    .card-violet .card-bullet::before { background: var(--violet); }
+    .card-blue .card-bullet::before { background: var(--blue); }
+
+    .card-bullet strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    /* Placeholder styling for template */
+    .card-bullet.ph {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .card-bullet.ph::before {
+      background: var(--border-card);
+      border: 1px dashed var(--text-dim);
+      width: 4px;
+      height: 4px;
+    }
+
+    .metric-cell .value.ph {
+      color: var(--border-card);
+    }
+
+    .metric-cell .label.ph {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* Footer */
+    .slide-foot {
+      padding: 0.8% 3.5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: clamp(7px, 0.6vw, 9px);
+      color: var(--text-dim);
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+
+    .slide-foot .dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--pink);
+      margin-right: 6px;
+    }
+
+    @media print {
+      body { background: #000; padding: 0; }
+      .slide-container { gap: 0; }
+      .slide { box-shadow: none; border-radius: 0; page-break-after: always; }
+      .slide-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+
+    <!-- ═══════════════════ COVER ═══════════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 1 &mdash; Cover</div>
+      <div class="slide cover">
+        <div class="cover-top">
+          <div class="brand">CAPCO</div>
+          <div class="tag">AI Solution Demo</div>
+        </div>
+        <div class="cover-center">
+          <div class="gradient-line"></div>
+          <h1>AI Demo<br>One Slider</h1>
+          <div class="subtitle">
+            Business context, AI solution, and measurable impact &mdash; one slide to set the stage before your live demo.
+          </div>
+        </div>
+        <div class="cover-bottom">
+          <div class="format-hint">
+            <div class="arrow">&#9654;</div>
+            <div class="hint-text"><strong>[Solution Name]</strong> <span>&mdash; One-line description of what it does and why it matters</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ BA GENIE ═══════════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 2 &mdash; Pre-filled Example (BA Genie)</div>
+      <div class="slide content-slide">
+
+        <div class="header-strip">
+          <div class="left">
+            <div>
+              <h2>SDLC Transformation with BA Genie</h2>
+              <div class="header-sub">Financial Services &nbsp;&bull;&nbsp; Requirements Engineering &nbsp;&bull;&nbsp; Custom AI Solution</div>
+            </div>
+          </div>
+          <div class="brand-mark">CAPCO</div>
+        </div>
+
+        <div class="metric-strip">
+          <div class="metric-cell">
+            <div class="value glow">45%</div>
+            <div class="label">Manual Effort Reduction</div>
+          </div>
+          <div class="metric-cell">
+            <div class="value">1.5x</div>
+            <div class="label">Throughput Increase</div>
+          </div>
+          <div class="metric-cell">
+            <div class="value">~19.5%</div>
+            <div class="label">Total Cost Saving</div>
+          </div>
+          <div class="metric-cell">
+            <div class="value">2 wk</div>
+            <div class="label">Pilot to Production</div>
+          </div>
+        </div>
+
+        <div class="cards-area">
+          <div class="card card-pink">
+            <div class="card-header">
+              <div class="card-num">1</div>
+              <div class="card-title">Problem &amp; Complications</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet"><strong>Requirements are the #1 bottleneck</strong> in SDLC &mdash; 30% of projects delayed by spec gaps</li>
+              <li class="card-bullet"><strong>64% of failed projects</strong> trace root cause to errors in requirements gathering</li>
+              <li class="card-bullet"><strong>Rework costs 15x more</strong> when defects from requirements surface in production</li>
+              <li class="card-bullet"><strong>BAs spend most time on low-value tasks</strong> &mdash; formatting &amp; consistency checks</li>
+              <li class="card-bullet"><strong>No scalable alternative</strong> &mdash; tools lack financial services domain context</li>
+            </ul>
+          </div>
+
+          <div class="card card-violet">
+            <div class="card-header">
+              <div class="card-num">2</div>
+              <div class="card-title">AI Solution &amp; Features</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet"><strong>Automates generation</strong> of epics, stories, and test cases from high-level inputs</li>
+              <li class="card-bullet"><strong>Custom-built AI</strong> trained on 6 corpuses of regulatory &amp; standards docs</li>
+              <li class="card-bullet"><strong>Outputs conform to internal standards</strong> &mdash; templates, taxonomy, criteria</li>
+              <li class="card-bullet"><strong>Model &amp; tech agnostic</strong> &mdash; swap underlying LLMs as capabilities evolve</li>
+              <li class="card-bullet"><strong>Zero-disruption deployment</strong> &mdash; parallel to existing pipelines; 2 wk pilot</li>
+            </ul>
+          </div>
+
+          <div class="card card-blue">
+            <div class="card-header">
+              <div class="card-num">3</div>
+              <div class="card-title">Impact &amp; Outcomes</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet"><strong>Up to 45% reduction</strong> in manual effort for requirements authoring</li>
+              <li class="card-bullet"><strong>1.5x throughput</strong> &mdash; higher-quality requirements in less time</li>
+              <li class="card-bullet"><strong>Accuracy &amp; consistency</strong> improved from first draft, fewer review cycles</li>
+              <li class="card-bullet"><strong>BAs shift to high-value work</strong> &mdash; stakeholder engagement &amp; strategy</li>
+              <li class="card-bullet"><strong>Sustainable &amp; scalable</strong> &mdash; pilot-to-production proven in 7 weeks</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slide-foot">
+          <span><span class="dot"></span>Confidential &mdash; Capco</span>
+          <span>BA Genie &nbsp;&bull;&nbsp; SDLC / Engineering &nbsp;&bull;&nbsp; Financial Services</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ TEMPLATE ═══════════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 3 &mdash; Blank Template</div>
+      <div class="slide content-slide">
+
+        <div class="header-strip" style="opacity: 0.5;">
+          <div class="left">
+            <div>
+              <h2>[Solution Name] &mdash; [Use Case Title]</h2>
+              <div class="header-sub">[Industry] &nbsp;&bull;&nbsp; [Function / Process Area] &nbsp;&bull;&nbsp; [Solution Type]</div>
+            </div>
+          </div>
+          <div class="brand-mark">CAPCO</div>
+        </div>
+
+        <div class="metric-strip">
+          <div class="metric-cell"><div class="value ph">___%</div><div class="label ph">Headline metric</div></div>
+          <div class="metric-cell"><div class="value ph">___x</div><div class="label ph">Secondary metric</div></div>
+          <div class="metric-cell"><div class="value ph">___</div><div class="label ph">Cost / time saving</div></div>
+          <div class="metric-cell"><div class="value ph">___</div><div class="label ph">Deploy timeline</div></div>
+        </div>
+
+        <div class="cards-area">
+          <div class="card card-pink">
+            <div class="card-header">
+              <div class="card-num">1</div>
+              <div class="card-title">Problem &amp; Complications</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet ph">What is the business context? What process or function is affected?</li>
+              <li class="card-bullet ph">What is the core problem? What breaks, fails, or underperforms?</li>
+              <li class="card-bullet ph">What makes it worse? Volume, complexity, regulatory pressure?</li>
+              <li class="card-bullet ph">Why isn't it solved already? What have teams tried that fell short?</li>
+              <li class="card-bullet ph">Cost of inaction? Risk, lost revenue, attrition, compliance exposure?</li>
+            </ul>
+          </div>
+
+          <div class="card card-violet">
+            <div class="card-header">
+              <div class="card-num">2</div>
+              <div class="card-title">AI Solution &amp; Features</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet ph">What does the solution do in one sentence?</li>
+              <li class="card-bullet ph">What are 2&ndash;3 key features? What can the user do with it?</li>
+              <li class="card-bullet ph">What makes it differentiated? Custom model, proprietary data, UX?</li>
+              <li class="card-bullet ph">How does it integrate? API, plug-in, standalone, embedded?</li>
+              <li class="card-bullet ph">How fast to deploy? What is the pilot timeline and effort?</li>
+            </ul>
+          </div>
+
+          <div class="card card-blue">
+            <div class="card-header">
+              <div class="card-num">3</div>
+              <div class="card-title">Impact &amp; Outcomes</div>
+            </div>
+            <ul class="card-bullets">
+              <li class="card-bullet ph">Headline metric? (e.g., X% reduction in time, cost, or errors)</li>
+              <li class="card-bullet ph">Secondary metric? (e.g., throughput, capacity, accuracy lift)</li>
+              <li class="card-bullet ph">Qualitative improvements? Speed, confidence, satisfaction?</li>
+              <li class="card-bullet ph">How does the team's work change? What do they stop/start?</li>
+              <li class="card-bullet ph">Is it scalable? Can it expand to other teams or regions?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slide-foot">
+          <span><span class="dot"></span>Confidential &mdash; Capco</span>
+          <span>[Solution Name] &nbsp;&bull;&nbsp; [Domain]</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
