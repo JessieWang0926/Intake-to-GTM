@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo One Slider — Narrative Flow</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --bg-page: #101018;
+      --bg-slide: #16161e;
+      --surface: #1e1e28;
+      --surface-alt: #232330;
+      --amber: #f59e0b;
+      --amber-soft: rgba(245, 158, 11, 0.12);
+      --amber-glow: rgba(245, 158, 11, 0.25);
+      --teal: #0ea5e9;
+      --teal-soft: rgba(14, 165, 233, 0.12);
+      --teal-glow: rgba(14, 165, 233, 0.25);
+      --emerald: #10b981;
+      --emerald-soft: rgba(16, 185, 129, 0.12);
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --white: #f0f0f5;
+      --text: #d0d0dc;
+      --text-mid: #8888a0;
+      --text-dim: #505068;
+      --border: #2a2a38;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #0a0a10;
+      color: var(--text);
+      padding: 48px 20px;
+    }
+
+    .slide-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    .slide-wrapper { position: relative; }
+
+    .slide-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+    }
+
+    .slide {
+      background: var(--bg-slide);
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ══════════════════════════════════════════════
+       COVER — Editorial / Asymmetric
+       ══════════════════════════════════════════════ */
+    .cover {
+      display: grid;
+      grid-template-columns: 58% 42%;
+      background: var(--bg-slide);
+    }
+
+    .cover-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 6% 5% 6% 5%;
+      position: relative;
+    }
+
+    .cover-left::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 15%;
+      bottom: 15%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--border), transparent);
+    }
+
+    .cover-left .brand {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-dim);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 10%;
+    }
+
+    .cover-left .accent-dots {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 5%;
+    }
+
+    .cover-left .accent-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .cover-left h1 {
+      font-size: clamp(36px, 4.8vw, 62px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.0;
+      letter-spacing: -2px;
+      margin-bottom: 5%;
+    }
+
+    .cover-left .tagline {
+      font-size: clamp(13px, 1.3vw, 18px);
+      color: var(--text-mid);
+      line-height: 1.6;
+      max-width: 90%;
+    }
+
+    .cover-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8% 5%;
+      background: var(--surface);
+      position: relative;
+    }
+
+    .cover-right .flow-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 10%;
+    }
+
+    .cover-right .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10% 0;
+      position: relative;
+    }
+
+    .cover-right .flow-step:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cover-right .flow-step .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cover-right .flow-step .step-num {
+      font-size: clamp(24px, 2.5vw, 34px);
+      font-weight: 900;
+      color: var(--text-dim);
+      min-width: 40px;
+    }
+
+    .cover-right .flow-step .step-text {
+      font-size: clamp(12px, 1.1vw, 16px);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .step-amber .step-dot { background: var(--amber); box-shadow: 0 0 12px var(--amber-glow); }
+    .step-amber .step-text { color: var(--amber); }
+    .step-teal .step-dot { background: var(--teal); box-shadow: 0 0 12px var(--teal-glow); }
+    .step-teal .step-text { color: var(--teal); }
+    .step-emerald .step-dot { background: var(--emerald); box-shadow: 0 0 12px var(--emerald-glow); }
+    .step-emerald .step-text { color: var(--emerald); }
+
+    .cover-format {
+      position: absolute;
+      bottom: 3.5%;
+      left: 5%;
+      right: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(10px, 0.9vw, 13px);
+    }
+
+    .cover-format .arrow { color: var(--teal); font-size: 12px; }
+    .cover-format strong { color: var(--white); }
+    .cover-format span { color: var(--text-dim); }
+
+    /* ══════════════════════════════════════════════
+       CONTENT — Horizontal Narrative Bands
+       ══════════════════════════════════════════════ */
+    .content-slide {
+      background: var(--bg-slide);
+    }
+
+    /* Slide header — thin bar */
+    .slide-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2% 3%;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .slide-hdr h2 {
+      font-size: clamp(14px, 1.5vw, 20px);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+
+    .slide-hdr .sub {
+      font-size: clamp(8px, 0.7vw, 10px);
+      color: var(--text-dim);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .slide-hdr .hdr-brand {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-dim);
+      letter-spacing: 3px;
+    }
+
+    /* Band container */
+    .bands {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .band {
+      flex: 1;
+      display: grid;
+      align-items: center;
+      padding: 0 3%;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .band:last-child { border-bottom: none; }
+
+    /* Band 1 — Problem (amber) */
+    .band-problem {
+      grid-template-columns: auto 1fr auto;
+      gap: 2.5%;
+      background: linear-gradient(90deg, var(--amber-soft) 0%, transparent 40%);
+    }
+
+    .band-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-size: clamp(8px, 0.7vw, 10px);
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0 clamp(6px, 0.8%, 12px);
+      position: relative;
+    }
+
+    .band-label::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 20%;
+      bottom: 20%;
+      width: 3px;
+      border-radius: 2px;
+    }
+
+    .band-problem .band-label { color: var(--amber); }
+    .band-problem .band-label::before { background: var(--amber); }
+
+    .band-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, 0.6%, 8px);
+    }
+
+    .band-bullet {
+      font-size: clamp(9px, 0.82vw, 11.5px);
+      line-height: 1.45;
+      color: var(--text);
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .band-bullet::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .band-problem .band-bullet::before { background: var(--amber); }
+
+    .band-bullet strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .band-stat-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 3% 2.5%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      min-width: clamp(90px, 10%, 140px);
+    }
+
+    .band-stat-value {
+      font-size: clamp(22px, 2.8vw, 36px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .band-stat-label {
+      font-size: clamp(7px, 0.6vw, 9px);
+      color: var(--text-mid);
+      text-align: center;
+      line-height: 1.3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .band-problem .band-stat-value { color: var(--amber); text-shadow: 0 0 20px var(--amber-glow); }
+
+    /* Band 2 — Solution (teal) */
+    .band-solution {
+      grid-template-columns: auto 1fr;
+      gap: 2.5%;
+      background: linear-gradient(90deg, var(--teal-soft) 0%, transparent 40%);
+    }
+
+    .band-solution .band-label { color: var(--teal); }
+    .band-solution .band-label::before { background: var(--teal); }
+    .band-solution .band-bullet::before { background: var(--teal); }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: clamp(6px, 0.8%, 12px);
+    }
+
+    .solution-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: clamp(8px, 1.2%, 14px) clamp(8px, 1%, 12px);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .solution-chip .chip-title {
+      font-size: clamp(8.5px, 0.78vw, 11px);
+      font-weight: 700;
+      color: var(--teal);
+      line-height: 1.3;
+    }
+
+    .solution-chip .chip-desc {
+      font-size: clamp(7.5px, 0.65vw, 9px);
+      color: var(--text-mid);
+      line-height: 1.4;
+    }
+
+    /* Band 3 — Impact (emerald) */
+    .band-impact {
+      grid-template-columns: auto 1fr;
+      gap: 2.5%;
+      background: linear-gradient(90deg, var(--emerald-soft) 0%, transparent 40%);
+    }
+
+    .band-impact .band-label { color: var(--emerald); }
+    .band-impact .band-label::before { background: var(--emerald); }
+
+    .impact-row {
+      display: flex;
+      gap: clamp(10px, 1.5%, 20px);
+      align-items: center;
+    }
+
+    .impact-metric {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: clamp(8px, 1%, 14px) clamp(10px, 1.5%, 20px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .impact-metric .big-num {
+      font-size: clamp(20px, 2.5vw, 34px);
+      font-weight: 900;
+      color: var(--emerald);
+      line-height: 1;
+      text-shadow: 0 0 20px var(--emerald-glow);
+    }
+
+    .impact-metric .metric-text {
+      font-size: clamp(8px, 0.7vw, 10px);
+      color: var(--text-mid);
+      line-height: 1.35;
+      max-width: 100px;
+    }
+
+    .impact-qualitative {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3px, 0.4%, 6px);
+      flex: 1;
+    }
+
+    .impact-qualitative .iq-item {
+      font-size: clamp(8.5px, 0.78vw, 11px);
+      color: var(--text);
+      line-height: 1.4;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .impact-qualitative .iq-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--emerald);
+    }
+
+    .impact-qualitative .iq-item strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .slide-foot {
+      padding: 0.6% 3%;
+      display: flex;
+      justify-content: space-between;
+      font-size: clamp(7px, 0.55vw, 8px);
+      color: var(--text-dim);
+      flex-shrink: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .slide-foot .dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    /* ── Template overrides ── */
+    .tmpl .band-bullet,
+    .tmpl .solution-chip .chip-title,
+    .tmpl .solution-chip .chip-desc,
+    .tmpl .iq-item {
+      color: var(--text-dim) !important;
+      font-style: italic;
+    }
+
+    .tmpl .band-bullet strong,
+    .tmpl .iq-item strong {
+      color: var(--text-dim) !important;
+      font-weight: 600;
+    }
+
+    .tmpl .band-stat-value,
+    .tmpl .impact-metric .big-num {
+      color: var(--border) !important;
+      text-shadow: none !important;
+    }
+
+    .tmpl .band-bullet::before,
+    .tmpl .iq-item::before {
+      background: var(--border) !important;
+      border: 1px dashed var(--text-dim);
+    }
+
+    @media print {
+      body { background: #000; padding: 0; }
+      .slide-container { gap: 0; }
+      .slide { box-shadow: none; border-radius: 0; page-break-after: always; }
+      .slide-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+
+    <!-- ═══════════════ COVER ═══════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 1 &mdash; Cover</div>
+      <div class="slide cover">
+        <div class="cover-left">
+          <div class="brand">CAPCO</div>
+          <div class="accent-dots">
+            <span style="background:var(--amber)"></span>
+            <span style="background:var(--teal)"></span>
+            <span style="background:var(--emerald)"></span>
+          </div>
+          <h1>AI Demo<br>One Slider</h1>
+          <div class="tagline">One slide to set the stage. Walk through the problem, the AI solution, and the measurable impact &mdash; then go straight into the live demo.</div>
+          <div class="cover-format">
+            <div class="arrow">&#9654;</div>
+            <strong>[Solution Name]</strong>
+            <span>&mdash; Short description of what it does</span>
+          </div>
+        </div>
+        <div class="cover-right">
+          <div class="flow-label">Narrative Flow</div>
+          <div class="flow-step step-amber">
+            <span class="step-dot"></span>
+            <span class="step-num">01</span>
+            <span class="step-text">Problem &amp; Complications</span>
+          </div>
+          <div class="flow-step step-teal">
+            <span class="step-dot"></span>
+            <span class="step-num">02</span>
+            <span class="step-text">AI Solution &amp; Features</span>
+          </div>
+          <div class="flow-step step-emerald">
+            <span class="step-dot"></span>
+            <span class="step-num">03</span>
+            <span class="step-text">Impact &amp; Outcomes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ BA GENIE ═══════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 2 &mdash; Pre-filled Example (BA Genie)</div>
+      <div class="slide content-slide">
+
+        <div class="slide-hdr">
+          <div>
+            <h2>SDLC Transformation with BA Genie</h2>
+            <div class="sub">Financial Services &nbsp;&bull;&nbsp; Requirements Engineering &nbsp;&bull;&nbsp; Custom AI Solution</div>
+          </div>
+          <div class="hdr-brand">CAPCO</div>
+        </div>
+
+        <div class="bands">
+
+          <!-- BAND 1: Problem -->
+          <div class="band band-problem">
+            <div class="band-label">Problem</div>
+            <div class="band-bullets">
+              <div class="band-bullet"><strong>Requirements are the #1 bottleneck</strong> in SDLC &mdash; 30% of tech projects delayed by upstream specification gaps</div>
+              <div class="band-bullet"><strong>64% of failed projects</strong> trace root cause to errors introduced during requirements gathering and design phases</div>
+              <div class="band-bullet"><strong>Rework costs 15x more</strong> when defects originating in requirements are caught in later SDLC phases</div>
+              <div class="band-bullet"><strong>BAs stuck on low-value work</strong> &mdash; formatting, consistency checks, and re-writing consume most of their time</div>
+              <div class="band-bullet"><strong>No scalable alternative</strong> &mdash; off-the-shelf tools lack financial services domain and regulatory context</div>
+            </div>
+            <div class="band-stat-box">
+              <div class="band-stat-value">64%</div>
+              <div class="band-stat-label">of failed projects<br>from bad requirements</div>
+            </div>
+          </div>
+
+          <!-- BAND 2: Solution -->
+          <div class="band band-solution">
+            <div class="band-label">Solution</div>
+            <div class="solution-grid">
+              <div class="solution-chip">
+                <div class="chip-title">Auto-Generate</div>
+                <div class="chip-desc">Epics, stories, test cases from high-level inputs</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">Custom AI</div>
+                <div class="chip-desc">Trained on 6 regulatory &amp; standards corpuses</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">Standards-Aligned</div>
+                <div class="chip-desc">Outputs match client templates &amp; taxonomy</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">Model Agnostic</div>
+                <div class="chip-desc">Swap LLMs as capabilities evolve</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">Zero Disruption</div>
+                <div class="chip-desc">Parallel deploy, 2-week pilot</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAND 3: Impact -->
+          <div class="band band-impact">
+            <div class="band-label">Impact</div>
+            <div class="impact-row">
+              <div class="impact-metric">
+                <div class="big-num">45%</div>
+                <div class="metric-text">Reduction in manual effort</div>
+              </div>
+              <div class="impact-metric">
+                <div class="big-num">1.5x</div>
+                <div class="metric-text">Throughput increase</div>
+              </div>
+              <div class="impact-metric">
+                <div class="big-num">~19.5%</div>
+                <div class="metric-text">Total cost saving</div>
+              </div>
+              <div class="impact-qualitative">
+                <div class="iq-item"><strong>Accuracy &amp; consistency</strong> improved from first draft &mdash; fewer review cycles needed</div>
+                <div class="iq-item"><strong>BAs shift to high-value work</strong> &mdash; stakeholder engagement, edge-case analysis</div>
+                <div class="iq-item"><strong>Sustainable &amp; scalable</strong> &mdash; pilot-to-production proven in 7 weeks</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="slide-foot">
+          <span><span class="dot" style="background:var(--teal)"></span>Confidential &mdash; Capco</span>
+          <span>BA Genie &nbsp;&bull;&nbsp; SDLC / Engineering &nbsp;&bull;&nbsp; Financial Services</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ TEMPLATE ═══════════════ -->
+    <div class="slide-wrapper">
+      <div class="slide-label">Slide 3 &mdash; Blank Template</div>
+      <div class="slide content-slide tmpl">
+
+        <div class="slide-hdr" style="opacity:0.5;">
+          <div>
+            <h2>[Solution Name] &mdash; [Use Case Title]</h2>
+            <div class="sub">[Industry] &nbsp;&bull;&nbsp; [Function / Process Area] &nbsp;&bull;&nbsp; [Solution Type]</div>
+          </div>
+          <div class="hdr-brand">CAPCO</div>
+        </div>
+
+        <div class="bands">
+
+          <div class="band band-problem">
+            <div class="band-label">Problem</div>
+            <div class="band-bullets">
+              <div class="band-bullet">What is the business context? What process or function is affected?</div>
+              <div class="band-bullet">What is the core problem? What breaks, fails, or underperforms today?</div>
+              <div class="band-bullet">What makes it worse? Volume, complexity, regulatory pressure, cost?</div>
+              <div class="band-bullet">Why hasn't it been solved? What have teams tried that fell short?</div>
+              <div class="band-bullet">What is the cost of inaction? Risk, lost revenue, compliance exposure?</div>
+            </div>
+            <div class="band-stat-box">
+              <div class="band-stat-value">___</div>
+              <div class="band-stat-label" style="color:var(--text-dim); font-style:italic;">Key problem<br>statistic</div>
+            </div>
+          </div>
+
+          <div class="band band-solution">
+            <div class="band-label">Solution</div>
+            <div class="solution-grid">
+              <div class="solution-chip">
+                <div class="chip-title">[Feature 1]</div>
+                <div class="chip-desc">What does it do?</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">[Feature 2]</div>
+                <div class="chip-desc">What does it do?</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">[Feature 3]</div>
+                <div class="chip-desc">What makes it different?</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">[Integration]</div>
+                <div class="chip-desc">How does it plug in?</div>
+              </div>
+              <div class="solution-chip">
+                <div class="chip-title">[Deploy]</div>
+                <div class="chip-desc">Timeline &amp; effort?</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="band band-impact">
+            <div class="band-label">Impact</div>
+            <div class="impact-row">
+              <div class="impact-metric">
+                <div class="big-num">___%</div>
+                <div class="metric-text" style="color:var(--text-dim); font-style:italic;">Headline metric</div>
+              </div>
+              <div class="impact-metric">
+                <div class="big-num">___x</div>
+                <div class="metric-text" style="color:var(--text-dim); font-style:italic;">Secondary metric</div>
+              </div>
+              <div class="impact-metric">
+                <div class="big-num">___</div>
+                <div class="metric-text" style="color:var(--text-dim); font-style:italic;">Cost / time saving</div>
+              </div>
+              <div class="impact-qualitative">
+                <div class="iq-item">What qualitative improvement do users experience?</div>
+                <div class="iq-item">How does the team's work change? What do they stop / start doing?</div>
+                <div class="iq-item">Is it scalable? Can it expand to other teams, regions, or use cases?</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="slide-foot">
+          <span><span class="dot" style="background:var(--teal)"></span>Confidential &mdash; Capco</span>
+          <span>[Solution Name] &nbsp;&bull;&nbsp; [Domain]</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

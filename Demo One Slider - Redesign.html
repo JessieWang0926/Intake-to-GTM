@@ -68,69 +68,150 @@
     }
 
     /* ══════════════════════════════════════════════
-       COVER SLIDE — Capco Brand Style
+       COVER SLIDE — Split Panel
        ══════════════════════════════════════════════ */
     .cover {
-      background: var(--slide-bg);
+      display: grid;
+      grid-template-columns: 58% 42%;
       padding: 0;
     }
 
-    .cover-content {
-      flex: 1;
+    .cover-left {
+      background: var(--slide-bg);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 5% 6% 5% 6%;
+      padding: 6% 5%;
+      position: relative;
     }
 
-    .cover .brand {
-      font-size: 20px;
+    .cover-left .brand {
+      font-size: 16px;
       font-weight: 900;
-      color: var(--navy);
-      letter-spacing: 3px;
+      color: var(--text-light);
+      letter-spacing: 4px;
       text-transform: uppercase;
-      margin-bottom: 5%;
+      margin-bottom: 8%;
     }
 
-    .cover h1 {
-      font-size: clamp(32px, 4.5vw, 58px);
+    .cover-left .accent-bar {
+      width: 60px;
+      height: 4px;
+      background: var(--pink);
+      border-radius: 2px;
+      margin-bottom: 4%;
+    }
+
+    .cover-left h1 {
+      font-size: clamp(34px, 4.5vw, 58px);
       font-weight: 900;
       color: var(--navy);
       line-height: 1.05;
       letter-spacing: -1px;
-      margin-bottom: 2.5%;
+      margin-bottom: 3%;
     }
 
-    .cover .subtitle {
-      font-size: clamp(14px, 1.6vw, 22px);
+    .cover-left .subtitle {
+      font-size: clamp(13px, 1.3vw, 18px);
       color: var(--text-mid);
       font-weight: 400;
-      line-height: 1.5;
-      max-width: 70%;
+      line-height: 1.55;
+      max-width: 90%;
     }
 
-    .cover-bottom {
-      padding: 0 6% 4%;
+    .cover-left .cover-format {
+      position: absolute;
+      bottom: 5%;
+      left: 5%;
+      right: 5%;
       display: flex;
-      align-items: flex-end;
-      gap: 24px;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: var(--white);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
     }
 
-    .cover .accent-bar {
-      width: 80px;
-      height: 5px;
-      background: var(--pink);
-      border-radius: 3px;
-      margin-bottom: 16px;
+    .cover-left .cover-format .arrow {
+      color: var(--pink);
+      font-size: 12px;
+      flex-shrink: 0;
     }
 
-    .cover .footer-text {
-      font-size: clamp(10px, 1vw, 14px);
-      font-weight: 700;
+    .cover-left .cover-format strong {
       color: var(--navy);
+      font-size: clamp(11px, 1vw, 14px);
+    }
+
+    .cover-left .cover-format span {
+      color: var(--text-light);
+      font-size: clamp(11px, 1vw, 14px);
+    }
+
+    .cover-right {
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8% 6%;
+      position: relative;
+    }
+
+    .cover-right::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--pink);
+    }
+
+    .cover-right .flow-label {
+      font-size: 10px;
+      font-weight: 700;
       letter-spacing: 2.5px;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12%;
     }
+
+    .cover-right .flow-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 7% 0;
+    }
+
+    .cover-right .flow-step:not(:last-child) {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .cover-right .flow-step .step-num {
+      font-size: clamp(28px, 3vw, 40px);
+      font-weight: 900;
+      color: rgba(255,255,255,0.12);
+      min-width: 50px;
+    }
+
+    .cover-right .flow-step .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .cover-right .flow-step .step-text {
+      font-size: clamp(12px, 1.1vw, 16px);
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.3px;
+    }
+
+    .step-pink .step-dot { background: var(--pink); }
+    .step-navy .step-dot { background: rgba(255,255,255,0.5); }
+    .step-blue .step-dot { background: #60a5fa; }
 
     /* ══════════════════════════════════════════════
        CONTENT SLIDE — BA Genie / Template
@@ -389,18 +470,33 @@
     <div class="slide-wrapper">
       <div class="slide-label">Slide 1 &mdash; Cover</div>
       <div class="slide cover">
-        <div class="cover-content">
+        <div class="cover-left">
           <div class="brand">CAPCO</div>
+          <div class="accent-bar"></div>
           <h1>AI Demo<br>One Slider</h1>
-          <div class="subtitle">
-            Your executive primer before the live demo &mdash; the business problem, the AI solution, and the impact, all on a single slide.
+          <div class="subtitle">Your executive primer before the live demo &mdash; the business problem, the AI solution, and the impact, all on a single slide.</div>
+          <div class="cover-format">
+            <div class="arrow">&#9654;</div>
+            <strong>[Solution Name]</strong>
+            <span>&mdash; Short description of what it does</span>
           </div>
         </div>
-        <div class="cover-bottom">
-          <div>
-            <div class="accent-bar"></div>
-            <div class="footer-text" style="margin-bottom:8px;">Cover Format</div>
-            <div style="font-size:clamp(12px,1.2vw,18px); color:var(--navy); font-weight:700;">[Solution Name]<span style="font-weight:400; color:var(--text-light);"> &mdash; One-line description of what it does and why it matters</span></div>
+        <div class="cover-right">
+          <div class="flow-label">Slide Structure</div>
+          <div class="flow-step step-pink">
+            <span class="step-num">01</span>
+            <span class="step-dot"></span>
+            <span class="step-text">Problem &amp; Complications</span>
+          </div>
+          <div class="flow-step step-navy">
+            <span class="step-num">02</span>
+            <span class="step-dot"></span>
+            <span class="step-text">AI Solution &amp; Features</span>
+          </div>
+          <div class="flow-step step-blue">
+            <span class="step-num">03</span>
+            <span class="step-dot"></span>
+            <span class="step-text">Impact &amp; Outcomes</span>
           </div>
         </div>
       </div>
