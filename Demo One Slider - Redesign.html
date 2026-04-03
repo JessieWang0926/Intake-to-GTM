@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo One Slider</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --bg: #f3f4f6;
+      --slide-bg: #ffffff;
+      --primary: #1e293b;
+      --secondary: #475569;
+      --accent: #6366f1;
+      --accent-light: #e0e7ff;
+      --accent-soft: #8b5cf6;
+      --border: #e2e8f0;
+      --col1: #4f46e5;
+      --col1-bg: #eef2ff;
+      --col2: #7c3aed;
+      --col2-bg: #f5f3ff;
+      --col3: #2563eb;
+      --col3-bg: #eff6ff;
+      --muted: #94a3b8;
+      --text: #1e293b;
+      --text-light: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 40px 20px;
+    }
+
+    .slide-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .slide {
+      background: var(--slide-bg);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slide-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Cover Slide ── */
+    .cover {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #3730a3 100%);
+      color: #ffffff;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px;
+    }
+
+    .cover .logo-bar {
+      position: absolute;
+      top: 32px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cover .logo-bar span {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .cover .divider-line {
+      width: 64px;
+      height: 3px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+
+    .cover .tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 6px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 32px;
+    }
+
+    .cover h1 {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .cover .subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.5;
+    }
+
+    .cover .meta {
+      position: absolute;
+      bottom: 32px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── Content Slides ── */
+    .content-slide {
+      padding: 0;
+    }
+
+    .slide-header {
+      padding: 28px 40px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .slide-header .left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slide-header .icon-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .slide-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.3px;
+    }
+
+    .slide-header .header-sub {
+      font-size: 13px;
+      color: var(--text-light);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    .slide-header .logos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .slide-header .logos span {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+    }
+
+    /* ── Three Column Grid ── */
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .column {
+      padding: 24px 28px 28px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .column:not(:last-child) {
+      border-right: 1px solid var(--border);
+    }
+
+    .col-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid;
+    }
+
+    .col-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .col-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .col-1 .col-header { border-color: var(--col1); }
+    .col-1 .col-icon { background: var(--col1-bg); color: var(--col1); }
+    .col-1 .col-title { color: var(--col1); }
+
+    .col-2 .col-header { border-color: var(--col2); }
+    .col-2 .col-icon { background: var(--col2-bg); color: var(--col2); }
+    .col-2 .col-title { color: var(--col2); }
+
+    .col-3 .col-header { border-color: var(--col3); }
+    .col-3 .col-icon { background: var(--col3-bg); color: var(--col3); }
+    .col-3 .col-title { color: var(--col3); }
+
+    /* ── Bullet Items ── */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .bullet-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--secondary);
+    }
+
+    .bullet-item .marker {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .col-1 .marker { background: var(--col1); }
+    .col-2 .marker { background: var(--col2); }
+    .col-3 .marker { background: var(--col3); }
+
+    .bullet-item strong {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* ── Template placeholders ── */
+    .placeholder {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .placeholder-line {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .placeholder-line .marker {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+      background: var(--border);
+    }
+
+    /* ── Footer ── */
+    .slide-footer {
+      padding: 10px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .slide-container { gap: 0; }
+      .slide { box-shadow: none; border-radius: 0; page-break-after: always; }
+      .slide-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+
+    <!-- ═══════════════════ COVER SLIDE ═══════════════════ -->
+    <div>
+      <div class="slide-label">Cover</div>
+      <div class="slide cover">
+        <div class="logo-bar">
+          <span>GE</span>
+          <span style="font-weight:400; font-size:14px; opacity:0.5;">|</span>
+          <span style="font-size:16px; letter-spacing:3px;">CAPCO</span>
+        </div>
+        <div class="tag">AI Solution Demo</div>
+        <div class="divider-line"></div>
+        <h1>Demo One Slider</h1>
+        <div class="subtitle">A single-slide snapshot of business context, AI solution, and expected impact — designed for fast executive walk-throughs before a live demo.</div>
+        <div class="meta">
+          <span>Confidential</span>
+          <span>|</span>
+          <span>US AI Champions</span>
+          <span>|</span>
+          <span>2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ PRE-FILLED: BA GENIE ═══════════════════ -->
+    <div>
+      <div class="slide-label">Pre-filled Example — BA Genie</div>
+      <div class="slide content-slide">
+        <div class="slide-header">
+          <div class="left">
+            <div class="icon-badge" style="background: var(--accent-light); color: var(--accent);">&#9670;</div>
+            <div>
+              <h2>SDLC Transformation with BA Genie</h2>
+              <div class="header-sub">Financial Services Industry &nbsp;&middot;&nbsp; Requirements Engineering &nbsp;&middot;&nbsp; Custom AI Solution</div>
+            </div>
+          </div>
+          <div class="logos">
+            <span>GE</span>
+            <span style="font-weight:400; color:#cbd5e1;">|</span>
+            <span style="font-size:13px; letter-spacing:2px;">CAPCO</span>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <!-- Column 1: Business Problem -->
+          <div class="column col-1">
+            <div class="col-header">
+              <div class="col-icon">&#9888;</div>
+              <div class="col-title">Business Problem</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Requirements are the #1 bottleneck</strong> in SDLC — 30% of tech projects are delayed by upstream specification gaps</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>64% of failed projects</strong> trace root cause to errors introduced during requirements gathering and design</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Rework costs 15x more</strong> when defects originating in requirements are caught in later phases</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Manual effort is unsustainable</strong> — BAs spend the majority of time on low-value formatting and consistency checks</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>No scalable alternative exists</strong> — off-the-shelf tools lack domain context for financial services regulatory requirements</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: AI Solution & Features -->
+          <div class="column col-2">
+            <div class="col-header">
+              <div class="col-icon">&#10024;</div>
+              <div class="col-title">AI Solution & Features</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>BA Genie automates generation</strong> of comprehensive epics, features, stories, and test cases from high-level inputs</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Custom-built AI tailored</strong> to client environment — trained on 6 corpuses of relevant regulatory and standards documents</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Aligned to internal standards</strong> — outputs conform to the client's templates, taxonomy, and acceptance criteria formats</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Model + tech agnostic</strong> — architecture supports swapping underlying models as capabilities evolve</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Deployed in 2 weeks</strong> with no disruption to existing delivery pipelines — runs in parallel to current workflows</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Impact -->
+          <div class="column col-3">
+            <div class="col-header">
+              <div class="col-icon">&#9650;</div>
+              <div class="col-title">Impact</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Up to 45% reduction</strong> in manual effort for requirements authoring — equivalent to ~19.5% total cost saving</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>1.5x throughput increase</strong> — teams produce more complete, higher-quality requirements in less time</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Higher accuracy & consistency</strong> — AI-generated outputs are accurate, complete, concise, and relevant from first draft</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>BAs shift to high-value work</strong> — freed from formatting, they focus on stakeholder engagement and edge-case analysis</div>
+              </li>
+              <li class="bullet-item">
+                <div class="marker"></div>
+                <div><strong>Sustainable & scalable</strong> — designed to grow with the team; fast pilot-to-production path proven in 7 weeks</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Confidential &middot; GE Vernova &amp; Capco</span>
+          <span>BA Genie &middot; SDLC / Engineering</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ BLANK TEMPLATE ═══════════════════ -->
+    <div>
+      <div class="slide-label">Blank Template — Fill In Your Demo</div>
+      <div class="slide content-slide">
+        <div class="slide-header">
+          <div class="left">
+            <div class="icon-badge" style="background: #f1f5f9; color: var(--muted);">&#9670;</div>
+            <div>
+              <h2 style="color: var(--muted);">[Solution Name] — [Domain / Use Case]</h2>
+              <div class="header-sub">[Industry] &nbsp;&middot;&nbsp; [Function / Process Area] &nbsp;&middot;&nbsp; [Solution Type]</div>
+            </div>
+          </div>
+          <div class="logos">
+            <span style="color: var(--border);">GE</span>
+            <span style="font-weight:400; color:#e2e8f0;">|</span>
+            <span style="font-size:13px; letter-spacing:2px; color: var(--border);">CAPCO</span>
+          </div>
+        </div>
+
+        <div class="three-col">
+          <!-- Column 1: Business Problem -->
+          <div class="column col-1">
+            <div class="col-header">
+              <div class="col-icon">&#9888;</div>
+              <div class="col-title">Business Problem</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What is the business context? What process or function is affected?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What is the core problem? What breaks, fails, or underperforms today?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What makes it worse? Volume, complexity, regulatory pressure, cost?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>Why hasn't it been solved? What have teams tried that fell short?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What is the cost of inaction? Risk, lost revenue, attrition, compliance?</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 2: AI Solution & Features -->
+          <div class="column col-2">
+            <div class="col-header">
+              <div class="col-icon">&#10024;</div>
+              <div class="col-title">AI Solution & Features</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What does the solution do in one sentence?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What are 2-3 key features? What can the user do with it?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What makes it differentiated? Custom model, proprietary data, UX?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>How does it integrate? API, plug-in, standalone, embedded in workflow?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>How fast can it be deployed? What is the pilot timeline and effort?</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Impact -->
+          <div class="column col-3">
+            <div class="col-header">
+              <div class="col-icon">&#9650;</div>
+              <div class="col-title">Impact</div>
+            </div>
+            <ul class="bullet-list">
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What is the headline metric? (e.g., X% reduction in time / cost / error)</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What is the secondary metric? (e.g., throughput, capacity, accuracy)</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>What qualitative improvement do users experience? (speed, confidence)</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>How does the team's work change? What do they stop / start doing?</div>
+              </li>
+              <li class="placeholder-line">
+                <div class="marker"></div>
+                <div>Is it scalable? Can it expand to other teams, regions, or use cases?</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <span>Confidential &middot; GE Vernova &amp; Capco</span>
+          <span>[Solution Name] &middot; [Domain]</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
