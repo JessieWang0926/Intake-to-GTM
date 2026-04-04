@@ -319,7 +319,7 @@ add_gate_slide(prs, "RELEASE GATE", "Approved to proceed?  Yes \u2192 continue t
 # Step 4
 add_table_slide(prs, 4, "Project Setup & Resource Allocation", "Setup", [
     ("**Asset Register** \u2014 Model the AI solution into asset register (MP and above)", "Business Sponsor"),
-    ("**Set Up Jira** \u2014 Create project, epics, stories & sprint backlog", "AI Enablement Team"),
+    ("**Set Up Jira & Project Folder** \u2014 Create Jira project and folder structure (epics, stories & backlog defined during build)", "AI Enablement Team"),
     ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Enablement Team"),
     ("**Set up healthy check-in cadence** \u2014 demo \u2192 feedback \u2192 refine cycles (keep AI Enablement in the loop)", "AI Champion + AI Fwd Engineer"),
 ])
@@ -331,6 +331,7 @@ add_table_slide(prs, 5, "Define the MVP & Build", "Build", [
     ("Provide **sample data & real-life use case scenarios** to guide the build", "AI Champion"),
     ("Build **demo environment** based on provided scenarios & data", "AI Forward Engineer"),
     ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "AI Enablement Team"),
+    ("Present solution on **Governance Call** \u2014 explain solution, walk through architecture & complete risk assessment before launch", "AI Forward Engineer"),
 ])
 
 # Governance Gate

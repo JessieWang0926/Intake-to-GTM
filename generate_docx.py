@@ -313,7 +313,7 @@ doc.add_page_break()
 add_step_heading(doc, 4, "Project Setup & Resource Allocation", "Setup")
 add_task_table(doc, [
     ("**Asset Register** \u2014 Model the AI solution into asset register (MP and above)", "Business Sponsor"),
-    ("**Set Up Jira** \u2014 Create project, epics, stories & sprint backlog", "AI Enablement Team"),
+    ("**Set Up Jira & Project Folder** \u2014 Create Jira project and project folder structure (epics, stories & backlog defined during build)", "AI Enablement Team"),
     ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Enablement Team"),
     ("**Set up healthy check-in cadence** \u2014 demo \u2192 feedback \u2192 refine cycles (keep AI Enablement in the loop)", "AI Champion + AI Fwd Engineer"),
 ], 4)
@@ -327,6 +327,7 @@ add_task_table(doc, [
     ("Provide **sample data & real-life use case scenarios** to guide the build", "AI Champion"),
     ("Build **demo environment** based on provided scenarios & data", "AI Forward Engineer"),
     ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "AI Enablement Team"),
+    ("Present solution on **Governance Call** \u2014 explain the solution, walk through architecture & complete risk assessment before launch", "AI Forward Engineer"),
 ], 5)
 add_gate(doc, "GOVERNANCE GATE", "AI Governance  \u2022  Compliance Checks  \u2022  Data Security Review  \u2022  Model Risk Validation")
 doc.add_page_break()
