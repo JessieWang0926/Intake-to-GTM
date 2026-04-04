@@ -1,9 +1,10 @@
-"""Generate a step-by-step DOCX guide: AI Use Case Intake to Go-To-Market."""
+"""Generate a step-by-step DOCX guide: AI Use Case Intake to Go-To-Market.
+Redesigned: multi-color, concise, role-per-task tables, scannable layout."""
 
 from docx import Document
-from docx.shared import Inches, Pt, Cm, RGBColor
+from docx.shared import Inches, Pt, Cm, RGBColor, Emu
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.section import WD_ORIENT
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn, nsdecls
 from docx.oxml import parse_xml
 import datetime
@@ -12,89 +13,250 @@ doc = Document()
 
 # -- Page margins --
 for section in doc.sections:
-    section.top_margin = Cm(2.5)
-    section.bottom_margin = Cm(2.5)
-    section.left_margin = Cm(2.5)
-    section.right_margin = Cm(2.5)
+    section.top_margin = Cm(2)
+    section.bottom_margin = Cm(2)
+    section.left_margin = Cm(2.2)
+    section.right_margin = Cm(2.2)
 
 # -- Style setup --
 style = doc.styles['Normal']
 font = style.font
 font.name = 'Calibri'
-font.size = Pt(11)
+font.size = Pt(10.5)
 font.color.rgb = RGBColor(0x33, 0x33, 0x33)
-style.paragraph_format.space_after = Pt(6)
+style.paragraph_format.space_after = Pt(4)
 style.paragraph_format.line_spacing = 1.15
 
-# Heading styles
-for level, (size, color) in enumerate([
-    (Pt(28), RGBColor(0x4A, 0x15, 0x8D)),  # Heading 1
-    (Pt(18), RGBColor(0x5B, 0x21, 0xB6)),  # Heading 2
-    (Pt(14), RGBColor(0x6D, 0x28, 0xD9)),  # Heading 3
-], start=1):
-    h = doc.styles[f'Heading {level}']
-    h.font.name = 'Calibri'
-    h.font.size = size
-    h.font.color.rgb = color
-    h.font.bold = True
-    h.paragraph_format.space_before = Pt(18 if level > 1 else 0)
-    h.paragraph_format.space_after = Pt(8)
+# Heading styles - each level gets a distinct look
+h1 = doc.styles['Heading 1']
+h1.font.name = 'Calibri'
+h1.font.size = Pt(22)
+h1.font.bold = True
+h1.paragraph_format.space_before = Pt(0)
+h1.paragraph_format.space_after = Pt(6)
+
+h2 = doc.styles['Heading 2']
+h2.font.name = 'Calibri'
+h2.font.size = Pt(14)
+h2.font.bold = True
+h2.paragraph_format.space_before = Pt(12)
+h2.paragraph_format.space_after = Pt(4)
+
+h3 = doc.styles['Heading 3']
+h3.font.name = 'Calibri'
+h3.font.size = Pt(11)
+h3.font.bold = True
+h3.paragraph_format.space_before = Pt(8)
+h3.paragraph_format.space_after = Pt(3)
+
+# Step colors (R, G, B)
+COLORS = {
+    1: RGBColor(0x25, 0x63, 0xEB),  # Blue
+    2: RGBColor(0x10, 0xB9, 0x81),  # Emerald
+    3: RGBColor(0xF5, 0x9E, 0x0B),  # Amber
+    4: RGBColor(0xF4, 0x3F, 0x5E),  # Rose
+    5: RGBColor(0x8B, 0x5C, 0xF6),  # Violet
+    6: RGBColor(0x06, 0xB6, 0xD4),  # Cyan
+    7: RGBColor(0xF9, 0x73, 0x16),  # Orange
+    8: RGBColor(0x14, 0xB8, 0xA6),  # Teal
+}
+
+LIGHT_COLORS = {
+    1: "D6E4FF",  # Blue light
+    2: "D1FAE5",  # Emerald light
+    3: "FEF3C7",  # Amber light
+    4: "FFE4E6",  # Rose light
+    5: "EDE9FE",  # Violet light
+    6: "CFFAFE",  # Cyan light
+    7: "FFEDD5",  # Orange light
+    8: "CCFBF1",  # Teal light
+}
+
+GATE_COLOR = RGBColor(0xDC, 0x26, 0x26)
+GATE_LIGHT = "FEE2E2"
+GRAY = RGBColor(0x6B, 0x72, 0x80)
 
 
-def add_purple_bar(doc):
-    """Add a thin purple horizontal rule."""
-    p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(4)
-    p.paragraph_format.space_after = Pt(4)
-    run = p.add_run("_" * 80)
-    run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-    run.font.size = Pt(2)
+def set_cell_shading(cell, hex_color):
+    """Set background color of a table cell."""
+    shading = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{hex_color}"/>')
+    cell._tc.get_or_add_tcPr().append(shading)
 
 
-def add_role_line(doc, roles):
-    p = doc.add_paragraph()
-    p.paragraph_format.space_before = Pt(4)
-    run = p.add_run("Key Roles: ")
-    run.bold = True
-    run.font.size = Pt(10)
-    run.font.color.rgb = RGBColor(0x5B, 0x21, 0xB6)
-    run = p.add_run("  |  ".join(roles))
-    run.font.size = Pt(10)
-    run.font.color.rgb = RGBColor(0x6B, 0x72, 0x80)
+def set_cell_borders(cell, color="CCCCCC"):
+    """Set thin borders on cell."""
+    tc = cell._tc
+    tcPr = tc.get_or_add_tcPr()
+    borders = parse_xml(
+        f'<w:tcBorders {nsdecls("w")}>'
+        f'  <w:top w:val="single" w:sz="4" w:color="{color}"/>'
+        f'  <w:left w:val="single" w:sz="4" w:color="{color}"/>'
+        f'  <w:bottom w:val="single" w:sz="4" w:color="{color}"/>'
+        f'  <w:right w:val="single" w:sz="4" w:color="{color}"/>'
+        f'</w:tcBorders>'
+    )
+    tcPr.append(borders)
 
 
-def add_bullet(doc, text, bold_prefix=None):
-    p = doc.add_paragraph(style='List Bullet')
-    if bold_prefix:
-        run = p.add_run(bold_prefix)
+def add_task_table(doc, tasks, step_num):
+    """Add a colored task table: columns = Task | Owner."""
+    table = doc.add_table(rows=1 + len(tasks), cols=2)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    table.autofit = True
+
+    # Set column widths
+    for row in table.rows:
+        row.cells[0].width = Cm(12)
+        row.cells[1].width = Cm(4.5)
+
+    # Header row
+    hdr = table.rows[0]
+    for i, text in enumerate(["Task", "Owner"]):
+        cell = hdr.cells[i]
+        p = cell.paragraphs[0]
+        run = p.add_run(text)
         run.bold = True
-        run.font.size = Pt(10.5)
-        p.add_run(text).font.size = Pt(10.5)
-    else:
-        p.add_run(text).font.size = Pt(10.5)
+        run.font.size = Pt(9)
+        run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+        run.font.name = 'Calibri'
+        p.alignment = WD_ALIGN_PARAGRAPH.LEFT if i == 0 else WD_ALIGN_PARAGRAPH.RIGHT
+        # Color header with step color
+        hex_c = str(COLORS[step_num])
+        set_cell_shading(cell, hex_c)
+
+    # Data rows
+    for idx, (task, owner) in enumerate(tasks):
+        row = table.rows[idx + 1]
+        # Task cell
+        cell_t = row.cells[0]
+        p = cell_t.paragraphs[0]
+        # Parse bold markers ** **
+        parts = task.split("**")
+        for j, part in enumerate(parts):
+            run = p.add_run(part)
+            run.font.size = Pt(10)
+            run.font.name = 'Calibri'
+            if j % 2 == 1:  # odd parts are bold
+                run.bold = True
+        # Owner cell
+        cell_o = row.cells[1]
+        p2 = cell_o.paragraphs[0]
+        p2.alignment = WD_ALIGN_PARAGRAPH.RIGHT
+        run = p2.add_run(owner)
+        run.font.size = Pt(9)
+        run.font.color.rgb = COLORS[step_num]
+        run.font.name = 'Calibri'
+        run.bold = True
+
+        # Alternate row shading
+        if idx % 2 == 0:
+            set_cell_shading(cell_t, LIGHT_COLORS[step_num])
+            set_cell_shading(cell_o, LIGHT_COLORS[step_num])
+
+    doc.add_paragraph()  # spacer
+
+
+def add_step_heading(doc, step_num, title, phase):
+    """Add a colored step heading."""
+    p = doc.add_heading(f"Step {step_num}: {title}", level=1)
+    for run in p.runs:
+        run.font.color.rgb = COLORS[step_num]
+
+    # Phase tag
+    p2 = doc.add_paragraph()
+    run = p2.add_run(f"\u25CF  {phase.upper()}")
+    run.font.size = Pt(9)
+    run.font.color.rgb = COLORS[step_num]
+    run.bold = True
+    run.font.name = 'Calibri'
+
+    # Colored line
+    p3 = doc.add_paragraph()
+    p3.paragraph_format.space_before = Pt(0)
+    p3.paragraph_format.space_after = Pt(6)
+    run = p3.add_run("\u2500" * 65)
+    run.font.color.rgb = COLORS[step_num]
+    run.font.size = Pt(6)
+
+
+def add_gate(doc, title, subtitle, is_governance=False):
+    """Add a decision gate block."""
+    color = GATE_COLOR
+    light = GATE_LIGHT
+    if not is_governance:
+        color = RGBColor(0xF5, 0x9E, 0x0B)
+        light = "FEF3C7"
+
+    table = doc.add_table(rows=1, cols=1)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    cell = table.rows[0].cells[0]
+    set_cell_shading(cell, light)
+
+    p = cell.paragraphs[0]
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run(f"\u26A0  {title}")
+    run.bold = True
+    run.font.size = Pt(12)
+    run.font.color.rgb = color
+    run.font.name = 'Calibri'
+
+    p2 = cell.add_paragraph()
+    p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p2.add_run(subtitle)
+    run.font.size = Pt(9.5)
+    run.font.color.rgb = GRAY
+    run.font.name = 'Calibri'
+
+    doc.add_paragraph()  # spacer
 
 
 # ============================================================
 # COVER PAGE
 # ============================================================
-for _ in range(6):
+for _ in range(5):
     doc.add_paragraph()
 
+# Colored accent bar
+p = doc.add_paragraph()
+p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+colors_text = ["\u2588" * 5 + "  " for _ in range(8)]
+for i, c in enumerate(COLORS.values()):
+    pass  # We'll do a simpler approach
+
+# Title
 title = doc.add_paragraph()
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = title.add_run("AI Use Case Intake\nto Go-To-Market")
+run = title.add_run("AI Use Case Intake")
 run.font.size = Pt(36)
-run.font.color.rgb = RGBColor(0x4A, 0x15, 0x8D)
+run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
 run.bold = True
 run.font.name = 'Calibri'
+
+title2 = doc.add_paragraph()
+title2.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = title2.add_run("to Go-To-Market")
+run.font.size = Pt(36)
+run.font.color.rgb = RGBColor(0x25, 0x63, 0xEB)
+run.bold = True
+run.font.name = 'Calibri'
+
+doc.add_paragraph()
+
+# Color bar
+bar = doc.add_paragraph()
+bar.alignment = WD_ALIGN_PARAGRAPH.CENTER
+for c in COLORS.values():
+    run = bar.add_run("\u2588\u2588\u2588\u2588 ")
+    run.font.color.rgb = c
+    run.font.size = Pt(14)
 
 doc.add_paragraph()
 
 sub = doc.add_paragraph()
 sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = sub.add_run("Step-by-Step Guide")
-run.font.size = Pt(20)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
+run.font.size = Pt(18)
+run.font.color.rgb = GRAY
 run.font.name = 'Calibri'
 
 doc.add_paragraph()
@@ -102,12 +264,11 @@ doc.add_paragraph()
 desc = doc.add_paragraph()
 desc.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = desc.add_run(
-    "A comprehensive guide for Domain Partners, AI Champions,\n"
-    "and AI Lab teams to navigate the full lifecycle\n"
-    "from use case ideation through go-to-market launch."
+    "8 steps from ideation to launch\n"
+    "Who does what at every stage"
 )
 run.font.size = Pt(12)
-run.font.color.rgb = RGBColor(0x6B, 0x72, 0x80)
+run.font.color.rgb = RGBColor(0x9C, 0xA3, 0xAF)
 run.font.name = 'Calibri'
 
 for _ in range(4):
@@ -117,7 +278,7 @@ footer_p = doc.add_paragraph()
 footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = footer_p.add_run("Global GenAI Lab")
 run.font.size = Pt(14)
-run.font.color.rgb = RGBColor(0x5B, 0x21, 0xB6)
+run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
 run.bold = True
 
 date_p = doc.add_paragraph()
@@ -126,339 +287,218 @@ run = date_p.add_run(datetime.date.today().strftime("%B %Y"))
 run.font.size = Pt(11)
 run.font.color.rgb = RGBColor(0x9C, 0xA3, 0xAF)
 
-# Page break
 doc.add_page_break()
 
 # ============================================================
 # TABLE OF CONTENTS
 # ============================================================
-doc.add_heading("Table of Contents", level=1)
+toc_heading = doc.add_heading("Table of Contents", level=1)
+for run in toc_heading.runs:
+    run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
+
 doc.add_paragraph()
 
 toc_items = [
-    ("1.", "Identify & Generate AI Use Cases", "Ideation"),
-    ("2.", "Submit Use Case Intake", "Intake"),
-    ("3.", "AI Lab Management Review", "Assessment"),
-    ("", "Release Gate Decision", ""),
-    ("4.", "Project Setup & Resource Allocation", "Setup"),
-    ("5.", "Define the MVP & Build", "Build"),
-    ("", "Governance Gate", ""),
-    ("6.", "GTM Ready: Package the Solution", "GTM Ready"),
-    ("7.", "GTM Push: Showcase & Sales Activation", "Go-To-Market"),
-    ("8.", "Track Results & Continuous Improvement", "Measure"),
+    (1, "Identify & Generate AI Use Cases", "Ideation"),
+    (2, "Submit Use Case Intake", "Intake"),
+    (3, "AI Lab Management Review", "Assessment"),
+    (0, "Release Gate Decision", ""),
+    (4, "Project Setup & Resource Allocation", "Setup"),
+    (5, "Define the MVP & Build", "Build"),
+    (0, "Governance Gate", ""),
+    (6, "GTM Ready: Package the Solution", "GTM Ready"),
+    (7, "GTM Push: Showcase & Sales Activation", "Go-To-Market"),
+    (8, "Track Results & Continuous Improvement", "Measure"),
 ]
 
-for num, title, phase in toc_items:
+for num, title_text, phase in toc_items:
     p = doc.add_paragraph()
-    p.paragraph_format.space_after = Pt(4)
+    p.paragraph_format.space_after = Pt(3)
     if num:
-        run = p.add_run(f"  {num}  ")
-        run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(0x5B, 0x21, 0xB6)
+        # Colored number
+        run = p.add_run(f"  {num}.  ")
+        run.font.size = Pt(13)
+        run.font.color.rgb = COLORS[num]
         run.bold = True
-        run = p.add_run(title)
+        run.font.name = 'Calibri'
+        # Title
+        run = p.add_run(title_text)
         run.font.size = Pt(12)
-        run.font.color.rgb = RGBColor(0x33, 0x33, 0x33)
+        run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
+        run.font.name = 'Calibri'
+        # Phase
         if phase:
-            run = p.add_run(f"  [{phase}]")
-            run.font.size = Pt(10)
-            run.font.color.rgb = RGBColor(0x9C, 0xA3, 0xAF)
+            run = p.add_run(f"   {phase}")
+            run.font.size = Pt(9)
+            run.font.color.rgb = COLORS[num]
+            run.font.name = 'Calibri'
     else:
-        run = p.add_run(f"       {title}")
-        run.font.size = Pt(11)
-        run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
+        run = p.add_run(f"        \u26A0  {title_text}")
+        run.font.size = Pt(10)
+        run.font.color.rgb = GRAY
         run.italic = True
+        run.font.name = 'Calibri'
 
 doc.add_page_break()
 
 # ============================================================
-# STEP 1
+# STEP 1: Identify & Generate AI Use Cases
 # ============================================================
-doc.add_heading("Step 1: Identify & Generate AI Use Cases", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: IDEATION")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
+add_step_heading(doc, 1, "Identify & Generate AI Use Cases", "Ideation")
 
-add_purple_bar(doc)
+add_task_table(doc, [
+    ("**Talk to your Practice Lead** about client pain points and market gaps", "Practice Lead"),
+    ("**Domain Partner elects an AI Champion** to own use case ideation", "Domain Partner"),
+    ("Brainstorm from in-flight projects, client conversations & market demand", "AI Champion"),
+    ("Check **Global Demo Catalog** (79+ solutions, 10 domains) to avoid duplication", "AI Champion"),
+    ("Identify **AI Infusion** opportunities in current fixed-fee projects", "AI Infusion Champion"),
+], 1)
 
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Talk to your Practice Lead about client pain points, market gaps, and emerging opportunities in your domain.")
-add_bullet(doc, "Each Domain Partner elects an AI Champion to be the point person for AI use case ideation within their practice area.")
-add_bullet(doc, "Brainstorm use cases from in-flight projects, client conversations, and competitive market analysis.")
-add_bullet(doc, "Check the Global Demo Catalog to see what solutions already exist across 10 domains and 79+ mapped solutions \u2014 avoid duplication.")
-add_bullet(doc, "For AI Infusion opportunities, identify repetitive work or manual processes in current fixed-fee projects that could be enhanced with AI.")
-
-doc.add_heading("Requirements", level=3)
-add_bullet(doc, "Nominated AI Champion per practice area (elected by Domain Partner)")
-add_bullet(doc, "Clear understanding of target client personas and their pain points")
-add_bullet(doc, "Awareness of existing solutions in the Global Demo Catalog across 10 domains: Banking/Financial Services, Insurance, SDLC/Engineering, Risk/Compliance/Legal, Knowledge Management, Operations/PMO, Cybersecurity, Customer/Sales/Marketing, Finance/CFO, Cross Domain")
-add_bullet(doc, "Use cases must be repeatable across multiple clients or opportunities")
-add_bullet(doc, "Relevant to a real client or market pain point")
-
-add_role_line(doc, ["Practice Lead", "AI Champion", "Domain Partner", "Account Partner"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 2
+# STEP 2: Submit Use Case Intake
 # ============================================================
-doc.add_heading("Step 2: Submit Use Case Intake", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: INTAKE")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
+add_step_heading(doc, 2, "Submit Use Case Intake", "Intake")
 
-add_purple_bar(doc)
+add_task_table(doc, [
+    ("Complete **AI Use-Case Intake Form** (one row per use case)", "AI Champion"),
+    ("Answer: **What is the pain/problem?**", "AI Champion"),
+    ("Answer: **Who feels the pain?** (user, buyer, team)", "AI Champion"),
+    ("Answer: **Why does it matter?** (cost, speed, risk, growth)", "AI Champion"),
+    ("Answer: **Why is it unsolved today?** (blockers, workarounds)", "AI Champion"),
+    ("Provide: title, practice, persona, business value, revenue potential, target accounts", "AI Champion"),
+    ("Assign priority: **High** / **Medium** / **Low**", "AI Champion + Practice Lead"),
+], 2)
 
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Complete the AI Use-Case Intake Form (one row per use case).")
-p = doc.add_paragraph()
-run = p.add_run("Answer the 4 Core Desirability Questions:")
-run.bold = True
-run.font.size = Pt(11)
-add_bullet(doc, "What is the pain/problem? \u2014 Describe the business challenge clearly.")
-add_bullet(doc, "Who feels the pain? \u2014 Identify the user, buyer, or team affected.")
-add_bullet(doc, "Why does it matter? \u2014 Explain impact on cost, speed, risk, growth, or experience.")
-add_bullet(doc, "Why is it unsolved today? \u2014 Note current blockers, manual workarounds, or market gaps.")
-
-doc.add_heading("Intake Form Fields Required", level=3)
-add_bullet(doc, "Use Case Title")
-add_bullet(doc, "Practice & Sub-Practice / Function")
-add_bullet(doc, "Champion Name")
-add_bullet(doc, "Description of Use Case")
-add_bullet(doc, "Pain Point Addressed & Current Blocker to Resolution")
-add_bullet(doc, "Target User (Persona)")
-add_bullet(doc, "Expected Business Value (Impact)")
-add_bullet(doc, "Market Demand Assessment")
-add_bullet(doc, "Priority Ranking: High (strong client value, clear demand) / Medium (promising, needs validation) / Low (interesting, less urgent)")
-add_bullet(doc, "Revenue Potential & Targeted Accounts")
-
-doc.add_heading("Tips", level=3)
-add_bullet(doc, "Keep answers concise. Submit multiple ideas if relevant.")
-add_bullet(doc, "Focus on practical, industry-relevant opportunities.")
-add_bullet(doc, "Reference the Global Catalog sheet for existing solutions.")
-
-add_role_line(doc, ["AI Champion", "AI Infusion Champion"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 3
+# STEP 3: AI Lab Management Review
 # ============================================================
-doc.add_heading("Step 3: AI Lab Management Review", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: ASSESSMENT")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
+add_step_heading(doc, 3, "AI Lab Management Review", "Assessment")
 
-add_purple_bar(doc)
+add_task_table(doc, [
+    ("Determine scope: **POC / MVP / Full Build** based on business value & tech depth", "AI Lab Leadership"),
+    ("Assess **strategic alignment** and data maturity", "AI Lab Leadership"),
+    ("Perform **regulatory / compliance** impact analysis", "AI Lab Leadership + Sponsor"),
+    ("Confirm **resource availability** across AI Forward Engineers", "AI Lab Leadership"),
+    ("Obtain **Business Sponsor sign-off**", "Business Sponsor"),
+    ("Prioritize **top 1\u20132 use cases** per champion for development", "AI Lab Leadership"),
+], 3)
 
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "AI Lab Leadership reviews all submitted use cases against strategic priorities.")
-add_bullet(doc, "Leadership determines project scope: POC (Proof of Concept), MVP (Minimum Viable Product), or Full Build \u2014 based on the solution\u2019s Business Value and Technology Depth.")
-add_bullet(doc, "Evaluate strategic alignment, data maturity, and regulatory/compliance impact.")
-add_bullet(doc, "Prioritize top 1\u20132 use cases per champion for development.")
+add_gate(doc, "RELEASE GATE", "Approved to proceed?  Yes \u2192 continue to build   |   No \u2192 return to ideation")
 
-doc.add_heading("Requirements", level=3)
-add_bullet(doc, "Strategic alignment with organizational goals confirmed")
-add_bullet(doc, "Data readiness and maturity assessment completed")
-add_bullet(doc, "Regulatory / compliance impact analysis performed")
-add_bullet(doc, "Resource availability confirmed across AI Forward Engineers")
-add_bullet(doc, "Business Sponsor identified and sign-off obtained")
-
-doc.add_heading("Release Gate Decision", level=2)
-p = doc.add_paragraph(
-    "At this point, a gateway decision is made: Is the project approved to proceed? "
-    "If YES, the project moves to setup and build. If NO, the use case returns to "
-    "ideation for refinement or is deprioritized."
-)
-p.runs[0].font.size = Pt(11)
-
-add_role_line(doc, ["AI Lab Leadership", "Business Sponsor", "Technology Owner"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 4
+# STEP 4: Project Setup & Resource Allocation
 # ============================================================
-doc.add_heading("Step 4: Project Setup & Resource Allocation", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: SETUP")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
-
-add_purple_bar(doc)
-
-doc.add_heading("Three Parallel Workstreams", level=3)
+add_step_heading(doc, 4, "Project Setup & Resource Allocation", "Setup")
 
 p = doc.add_paragraph()
-run = p.add_run("Asset Register: ")
-run.bold = True
-p.add_run("Model the AI solution into the asset register. Document the solution\u2019s scope, technology stack, and expected outcomes.")
+run = p.add_run("Three parallel workstreams kick off simultaneously:")
+run.font.size = Pt(10)
+run.font.color.rgb = GRAY
+run.italic = True
 
-p = doc.add_paragraph()
-run = p.add_run("Set Up Jira: ")
-run.bold = True
-p.add_run("Create the Jira project with epics, user stories, and sprint backlog. Establish the sprint cadence and assign the project team.")
+add_task_table(doc, [
+    ("**Asset Register** \u2014 Model the AI solution into asset register", "AI Lab Mgmt"),
+    ("**Set Up Jira** \u2014 Create project, epics, stories & sprint backlog", "Program Manager"),
+    ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Lab Mgmt"),
+    ("Establish **weekly checkpoint** cadence", "Program Manager"),
+    ("Identify **point of contact** and confirm Business Sponsor", "Program Manager"),
+], 4)
 
-p = doc.add_paragraph()
-run = p.add_run("Allocate Resources: ")
-run.bold = True
-p.add_run("Use Retain to assign AI Forward Engineers and supporting team members. Confirm availability and engagement timeline.")
-
-doc.add_heading("Requirements", level=3)
-add_bullet(doc, "Jira project board with defined epics, stories, and acceptance criteria")
-add_bullet(doc, "Assigned AI Forward Engineer(s) with confirmed availability")
-add_bullet(doc, "Asset registration completed in the central register")
-add_bullet(doc, "Resource allocation confirmed in Retain system")
-add_bullet(doc, "Point of contact and Business Sponsor formally identified")
-add_bullet(doc, "Weekly checkpoint cadence established")
-
-add_role_line(doc, ["AI Lab Management", "AI Forward Engineer", "Program Manager"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 5
+# STEP 5: Define the MVP & Build
 # ============================================================
-doc.add_heading("Step 5: Define the MVP & Build", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: BUILD")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
+add_step_heading(doc, 5, "Define the MVP & Build", "Build")
 
-add_purple_bar(doc)
+add_task_table(doc, [
+    ("**Define MVP scope** \u2014 features, demo expectations & success criteria", "AI Fwd Engineer + Sponsor"),
+    ("Develop through **sprint cycles** with iterative testing", "AI Forward Engineer"),
+    ("Build **demo environment** with real-world scenarios", "AI Forward Engineer"),
+    ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "Program Manager"),
+], 5)
 
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Define the MVP: The AI Lab and the Business collaboratively define the Minimum Viable Product \u2014 what features are in scope, what the demo should show, and what success looks like.")
-add_bullet(doc, "Develop the solution through iterative sprint cycles.")
-add_bullet(doc, "Build the demo environment with real-world scenarios and sample data.")
-add_bullet(doc, "Conduct iterative testing with user feedback at each sprint review.")
-add_bullet(doc, "Track demo status progression: Backlog \u2192 Build In-Progress \u2192 MVP Demo Complete \u2192 Additional Features In Progress.")
+add_gate(doc,
+    "GOVERNANCE GATE",
+    "AI Governance Evaluation  \u2022  Compliance Checks  \u2022  Data Security Review  \u2022  Model Risk Validation",
+    is_governance=True)
 
-doc.add_heading("Requirements", level=3)
-add_bullet(doc, "MVP scope definition signed off by the Business Sponsor")
-add_bullet(doc, "Development environment and tooling ready")
-add_bullet(doc, "Sprint cadence with weekly checkpoints")
-add_bullet(doc, "Demo script and test scenarios prepared")
-add_bullet(doc, "Compliance and data security review initiated in parallel")
-add_bullet(doc, "Office hours support available for the build team")
-
-doc.add_heading("Governance Gate", level=2)
-p = doc.add_paragraph(
-    "Before proceeding to GTM, the solution must pass through a Governance Gate:\n"
-)
-add_bullet(doc, "AI Governance Evaluation \u2014 assess model fairness, explainability, and ethical considerations")
-add_bullet(doc, "Compliance Checks \u2014 regulatory alignment (e.g., ECOA, Basel, NY Reg 126, BCBS 239)")
-add_bullet(doc, "Data Security Review \u2014 data handling, privacy, and security controls")
-add_bullet(doc, "Model Risk Validation \u2014 model performance, robustness, and risk assessment")
-
-add_role_line(doc, ["AI Forward Engineer", "Business Sponsor", "AI Champion", "CRO", "CDO", "Compliance"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 6
+# STEP 6: GTM Ready
 # ============================================================
-doc.add_heading("Step 6: GTM Ready \u2014 Package the Solution", level=1)
+add_step_heading(doc, 6, "GTM Ready \u2014 Package the Solution", "GTM Ready")
+
+add_task_table(doc, [
+    ("Finalize **demo script** and conduct full run-throughs", "AI Fwd Engineer + Champion"),
+    ('Prepare **"AI vs. Non-AI" talk track** (competitive differentiation)', "AI Champion + Sales"),
+    ("Create **one-pager**, pricing template & engagement model", "Domain Leader + Sales"),
+    ("Map **target accounts & buyer personas**", "Sales"),
+    ("Register in **Global Demo Catalog** with domain mapping", "Program Manager"),
+], 6)
+
+# Deliverables callout
 p = doc.add_paragraph()
-run = p.add_run("PHASE: GTM READY")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
+run = p.add_run("Deliverables checklist: ")
 run.bold = True
+run.font.size = Pt(10)
+run.font.color.rgb = COLORS[6]
+run = p.add_run("Polished demo  |  One-pager  |  Talk track  |  Pricing template  |  Target account list  |  Backlog reference")
+run.font.size = Pt(10)
+run.font.color.rgb = GRAY
 
-add_purple_bar(doc)
-
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Finalize the demo script and conduct full run-throughs.")
-add_bullet(doc, 'Prepare the "AI vs. Non-AI" talk track \u2014 1\u20132 lines of competitive differentiation explaining what AI enables vs. the status quo.')
-add_bullet(doc, "Create sales enablement materials: solution one-pager, pricing template, engagement model.")
-add_bullet(doc, "Identify best-fit buyers and map to target accounts.")
-add_bullet(doc, "Register the solution in the Global Demo Catalog with domain mapping and status update.")
-
-doc.add_heading("Required Deliverables", level=3)
-add_bullet(doc, "Completed demo with polished user experience")
-add_bullet(doc, "One-pager / solution brief for sellers (see Demo One-Slider format)")
-add_bullet(doc, 'Competitive talk track (e.g., "With AI, we automate extraction + exceptioning; without AI, manual parsing drives delay + errors.")')
-add_bullet(doc, "Pricing template and engagement model")
-add_bullet(doc, "Defined target accounts and buyer personas")
-add_bullet(doc, "Backlog reference and asset links documented")
-add_bullet(doc, "SmartSuite alignment confirmed")
-
-add_role_line(doc, ["AI Champion", "Domain Leader", "Sales Team", "Program Manager"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 7
+# STEP 7: GTM Push
 # ============================================================
-doc.add_heading("Step 7: GTM Push \u2014 Showcase & Sales Activation", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: GO-TO-MARKET")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
-run.bold = True
+add_step_heading(doc, 7, "GTM Push \u2014 Showcase & Sales Activation", "Go-To-Market")
 
-add_purple_bar(doc)
+add_task_table(doc, [
+    ("Schedule **AI Capability Showcases** (bi-weekly, rotating facilitator)", "Domain Leader"),
+    ("Run **Sales Activations** targeting specific accounts", "Sales + Account Partner"),
+    ("Form **Sprint Pods** for active pursuit opportunities", "Cross-functional"),
+    ("Present to clients and gather real-time feedback", "AI Champion + Presenter"),
+    ("Assign **follow-up actions** with owners and due dates", "Program Manager"),
+    ("Send **bi-weekly Showcase Communications** to the org", "Program Manager"),
+], 7)
 
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Schedule AI Capability Showcases on the bi-weekly cadence, with rotating Domain Leader facilitation.")
-add_bullet(doc, "Run Sales Activations targeting specific accounts identified in the GTM Ready phase.")
-add_bullet(doc, "Form Sprint Pods \u2014 small, focused teams for active pursuit opportunities.")
-add_bullet(doc, "Present to clients, demonstrate the solution live, and gather real-time feedback.")
-add_bullet(doc, "Assign follow-up actions with clear owners and due dates.")
-add_bullet(doc, "Send bi-weekly Showcase Communications to the broader organization.")
-
-doc.add_heading("Showcase Planning Requirements", level=3)
-add_bullet(doc, "Call Type defined: Sales Activation or AI Capability Showcase")
-add_bullet(doc, "Date and Facilitator (rotating Domain Leader) confirmed")
-add_bullet(doc, "Topic / Featured Use Case(s) selected")
-add_bullet(doc, "Presenter(s) briefed and demo environment tested")
-add_bullet(doc, '"AI vs. Non-AI" talk track ready')
-add_bullet(doc, "Target accounts and follow-up teams identified")
-add_bullet(doc, "Sprint pod members assigned for active pursuits")
-add_bullet(doc, "Key decisions, actions, owners, and due dates documented post-showcase")
-
-add_role_line(doc, ["Domain Leader", "Account Partner", "AI Champion", "Business Sponsor"])
 doc.add_page_break()
 
 # ============================================================
-# STEP 8
+# STEP 8: Track Results
 # ============================================================
-doc.add_heading("Step 8: Track Results & Continuous Improvement", level=1)
-p = doc.add_paragraph()
-run = p.add_run("PHASE: MEASURE")
-run.font.size = Pt(9)
-run.font.color.rgb = RGBColor(0x7C, 0x3A, 0xED)
+add_step_heading(doc, 8, "Track Results & Continuous Improvement", "Measure")
+
+add_task_table(doc, [
+    ("Track **CTAR results** and revenue metrics per solution", "Program Manager"),
+    ("Monitor maturity: Idea \u2192 In Build \u2192 Demo-Ready \u2192 GTM-Ready \u2192 **In Pursuit**", "AI Lab Leadership"),
+    ("Capture **client feedback** and feature requests", "AI Champion"),
+    ("Feed learnings back into **next intake cycle** (Step 1)", "AI Champion + Domain Leader"),
+    ("Identify **AI Infusion** opportunities in existing engagements", "Account Partner"),
+], 8)
+
+# Continuous loop callout
+table = doc.add_table(rows=1, cols=1)
+table.alignment = WD_TABLE_ALIGNMENT.CENTER
+cell = table.rows[0].cells[0]
+set_cell_shading(cell, LIGHT_COLORS[8])
+p = cell.paragraphs[0]
+p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+run = p.add_run("\u21BB  Continuous Loop: ")
 run.bold = True
-
-add_purple_bar(doc)
-
-doc.add_heading("What to Do", level=3)
-add_bullet(doc, "Track CTAR results and revenue metrics per solution.")
-add_bullet(doc, "Monitor demo maturity progression: Idea \u2192 In Build \u2192 Demo-Ready \u2192 GTM-Ready \u2192 In Pursuit.")
-add_bullet(doc, "Capture client feedback, feature requests, and enhancement opportunities.")
-add_bullet(doc, "Feed learnings back into the next intake cycle for continuous improvement.")
-add_bullet(doc, "Identify AI Infusion opportunities in existing client engagements.")
-
-doc.add_heading("Requirements", level=3)
-add_bullet(doc, "Showcase Tracker updated with outcomes after every showcase/activation")
-add_bullet(doc, "Domain Metrics Dashboard maintained (solution counts across 10 domains)")
-add_bullet(doc, "Revenue and pipeline attribution tracked per solution")
-add_bullet(doc, "Continuous feedback loop established back to AI Champions")
-add_bullet(doc, "Infusion project enhancements communicated via Account Partners and Program Managers")
-
-doc.add_heading("The Continuous Loop", level=3)
-p = doc.add_paragraph(
-    "Results from go-to-market activities feed directly back into Step 1, "
-    "creating a virtuous cycle. Client feedback generates new use case ideas, "
-    "successful demos inspire adjacent solutions, and market learnings sharpen "
-    "future intake submissions. The goal is not a one-time launch but a "
-    "continuously improving portfolio of AI-powered solutions."
-)
-p.runs[0].font.size = Pt(11)
-
-add_role_line(doc, ["Program Manager", "AI Lab Leadership", "Domain Leader", "AI Champion"])
+run.font.size = Pt(10.5)
+run.font.color.rgb = COLORS[8]
+run = p.add_run("Results feed back into Step 1. Client feedback generates new ideas, successful demos inspire adjacent solutions, market learnings sharpen future intake.")
+run.font.size = Pt(10)
+run.font.color.rgb = RGBColor(0x33, 0x33, 0x33)
 
 # ============================================================
 # SAVE
