@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo One Slider - Capco AI Solutions</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #1a1a2e;
-    color: #e0e0e0;
+    background: #f0f2f5;
+    color: #1a1f36;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,23 +25,23 @@
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #7a8a9e;
+    color: #8892a6;
     margin-bottom: -40px;
   }
 
   /* ─── Slide Container ─── */
   .slide {
-    width: 1280px;
-    min-height: 720px;
-    border-radius: 6px;
+    width: 1400px;
+    min-height: 780px;
+    border-radius: 8px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
   }
 
   /* ─── COVER SLIDE ─── */
   .slide-cover {
-    background: linear-gradient(160deg, #0d1b2a 0%, #1b2d45 40%, #1a2940 100%);
+    background: linear-gradient(135deg, #0f1b2d 0%, #162544 50%, #1a2a4a 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -50,109 +50,179 @@
     padding: 80px;
   }
 
-  .cover-accent-line {
-    width: 80px;
-    height: 3px;
-    background: linear-gradient(90deg, #3a8f8f, #5ab8b8);
-    border-radius: 2px;
-    margin-bottom: 40px;
+  .cover-accent-bar {
+    width: 5px;
+    height: 60px;
+    background: linear-gradient(180deg, #e84393, #6c5ce7);
+    border-radius: 3px;
+    margin-bottom: 36px;
   }
 
   .cover-solution-name {
-    font-size: 52px;
-    font-weight: 700;
+    font-size: 56px;
+    font-weight: 800;
     color: #ffffff;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
     margin-bottom: 20px;
-    line-height: 1.15;
-  }
-
-  .cover-solution-name span {
-    color: #5ab8b8;
+    line-height: 1.1;
   }
 
   .cover-tagline {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 300;
-    color: #9ab0c6;
-    max-width: 700px;
-    line-height: 1.5;
-    margin-bottom: 50px;
+    color: #a0b4cc;
+    max-width: 680px;
+    line-height: 1.6;
+    margin-bottom: 48px;
   }
 
   .cover-meta {
     display: flex;
-    gap: 30px;
+    gap: 24px;
     align-items: center;
-    font-size: 13px;
-    color: #5a7a96;
-    letter-spacing: 1px;
+    font-size: 12px;
+    color: #667a92;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
+    font-weight: 500;
   }
 
-  .cover-meta .divider {
+  .cover-meta .dot {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #3a5a70;
+    background: #4a5a70;
   }
 
   .cover-brand {
     position: absolute;
     top: 36px;
-    right: 44px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: #4a6a80;
+    right: 48px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #ffffff;
+    opacity: 0.7;
   }
 
-  .cover-brand-icon {
+  .cover-stripe {
     position: absolute;
-    top: 30px;
-    left: 44px;
-    font-size: 28px;
-    font-weight: 700;
-    color: #5ab8b8;
-    opacity: 0.7;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3);
   }
 
   /* ─── CONTENT SLIDE ─── */
   .slide-content {
-    background: #0f1923;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
   }
 
+  /* ─── Header ─── */
   .slide-header {
-    padding: 28px 44px 20px;
-    border-bottom: 1px solid rgba(90, 184, 184, 0.12);
+    padding: 28px 48px 24px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    border-bottom: 3px solid #0f1b2d;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-bar {
+    width: 4px;
+    height: 48px;
+    background: linear-gradient(180deg, #e84393, #6c5ce7);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
   .slide-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-  }
-
-  .slide-title span {
-    color: #5ab8b8;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f1b2d;
+    line-height: 1.2;
   }
 
   .slide-subtitle {
     font-size: 13px;
-    color: #5a7a96;
+    color: #6b7a8d;
     font-weight: 400;
+    margin-top: 4px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
   }
 
-  .slide-brand-sm {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: #3a5a70;
+  .slide-subtitle .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .slide-subtitle .tag::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #6b7a8d;
+  }
+
+  .slide-subtitle .tag:first-child::before { display: none; }
+
+  .slide-brand {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #0f1b2d;
+  }
+
+  /* ─── Metrics Banner ─── */
+  .metrics-banner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    padding: 0;
+    background: #f7f8fa;
+    border-bottom: 1px solid #e8ecf1;
+  }
+
+  .metric {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 24px 32px;
+    border-right: 1px solid #e8ecf1;
+  }
+
+  .metric:last-child { border-right: none; }
+
+  .metric-value {
+    font-size: 42px;
+    font-weight: 800;
+    color: #0f1b2d;
+    letter-spacing: -1.5px;
+    line-height: 1;
+  }
+
+  .metric-value.accent-pink { color: #e84393; }
+  .metric-value.accent-navy { color: #0f1b2d; }
+  .metric-value.accent-purple { color: #6c5ce7; }
+  .metric-value.accent-blue { color: #0984e3; }
+
+  .metric-label {
+    font-size: 13px;
+    color: #6b7a8d;
+    font-weight: 500;
+    line-height: 1.35;
   }
 
   /* ─── Three Column Layout ─── */
@@ -161,128 +231,181 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
     flex: 1;
-    padding: 0;
   }
 
   .column {
-    padding: 32px 36px;
+    padding: 28px 32px 24px;
     display: flex;
     flex-direction: column;
   }
 
   .column:not(:last-child) {
-    border-right: 1px solid rgba(90, 184, 184, 0.08);
+    border-right: 1px solid #e8ecf1;
+  }
+
+  .col-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
   }
 
   .col-number {
-    font-size: 11px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #3a6a6a;
-    margin-bottom: 6px;
+    color: #ffffff;
+    flex-shrink: 0;
   }
 
+  .column:nth-child(1) .col-number { background: #e84393; }
+  .column:nth-child(2) .col-number { background: #0f1b2d; }
+  .column:nth-child(3) .col-number { background: #0984e3; }
+
   .col-heading {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     line-height: 1.3;
   }
 
-  .column:nth-child(1) .col-heading {
-    color: #c4845c;
-    border-color: #c4845c;
+  .column:nth-child(1) .col-heading { color: #e84393; }
+  .column:nth-child(2) .col-heading { color: #0f1b2d; }
+  .column:nth-child(3) .col-heading { color: #0984e3; }
+
+  .col-rule {
+    height: 3px;
+    border-radius: 2px;
+    margin-bottom: 22px;
+    margin-top: 12px;
   }
 
-  .column:nth-child(2) .col-heading {
-    color: #5ab8b8;
-    border-color: #5ab8b8;
-  }
-
-  .column:nth-child(3) .col-heading {
-    color: #7aa6d6;
-    border-color: #7aa6d6;
-  }
+  .column:nth-child(1) .col-rule { background: #e84393; }
+  .column:nth-child(2) .col-rule { background: #0f1b2d; }
+  .column:nth-child(3) .col-rule { background: #0984e3; }
 
   .bullet-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
     flex: 1;
   }
 
   .bullet-list li {
-    font-size: 13.5px;
+    font-size: 13px;
     line-height: 1.55;
-    color: #b8c8d8;
-    padding-left: 20px;
+    color: #3a4556;
+    padding-left: 18px;
     position: relative;
     font-weight: 400;
+  }
+
+  .bullet-list li strong {
+    color: #0f1b2d;
+    font-weight: 600;
   }
 
   .bullet-list li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 8px;
-    width: 6px;
-    height: 6px;
+    top: 7px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
   }
 
-  .column:nth-child(1) .bullet-list li::before { background: #c4845c; }
-  .column:nth-child(2) .bullet-list li::before { background: #5ab8b8; }
-  .column:nth-child(3) .bullet-list li::before { background: #7aa6d6; }
+  .column:nth-child(1) .bullet-list li::before { background: #e84393; }
+  .column:nth-child(2) .bullet-list li::before { background: #0f1b2d; }
+  .column:nth-child(3) .bullet-list li::before { background: #0984e3; }
 
   /* ─── Slide Footer ─── */
   .slide-footer {
-    padding: 14px 44px;
-    border-top: 1px solid rgba(90, 184, 184, 0.08);
+    padding: 14px 48px;
+    border-top: 1px solid #e8ecf1;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 11px;
-    color: #3a5a70;
+    color: #8892a6;
+  }
+
+  .slide-footer .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .slide-footer .footer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e84393;
+    opacity: 0.6;
+  }
+
+  .slide-footer .footer-right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .slide-footer .footer-right .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #c0c8d4;
+  }
+
+  .slide-footer-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3);
   }
 
   /* ─── TEMPLATE SLIDE ─── */
-  .template .column {
-    background: rgba(255,255,255,0.015);
+  .template .metrics-banner {
+    background: #fafbfc;
+  }
+
+  .template .metric-value {
+    color: #c0c8d4 !important;
+    font-style: italic;
+  }
+
+  .template .metric-label {
+    color: #b0b8c4;
+    font-style: italic;
   }
 
   .template .bullet-list li {
-    color: #4a6070;
+    color: #8892a6;
     font-style: italic;
-    border-bottom: 1px dashed rgba(90, 184, 184, 0.1);
-    padding-bottom: 12px;
+    border-bottom: 1px dashed #e0e4ea;
+    padding-bottom: 14px;
+  }
+
+  .template .bullet-list li strong {
+    color: #8892a6;
+    font-weight: 500;
   }
 
   .template .bullet-list li::before {
-    opacity: 0.4;
+    opacity: 0.3;
   }
 
-  .template-badge {
-    display: inline-block;
-    background: rgba(90, 184, 184, 0.1);
-    color: #5ab8b8;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 3px;
-    border: 1px solid rgba(90, 184, 184, 0.15);
-  }
-
-  /* ─── Print Styles ─── */
+  /* ─── Print ─── */
   @media print {
     body { background: white; padding: 0; gap: 0; }
     .slide { box-shadow: none; page-break-after: always; }
     .slide-label { display: none; }
+    .instructions-box { display: none; }
   }
 </style>
 </head>
@@ -291,82 +414,129 @@
 <!-- ════════════════════════════════════════════════════════════════
      SLIDE 1: COVER — PRE-FILLED (BA GENIE)
      ════════════════════════════════════════════════════════════════ -->
-<div class="slide-label">Slide 1 of 3 &mdash; Cover</div>
+<div class="slide-label">Slide 1 of 4 &mdash; Cover</div>
 <div class="slide slide-cover">
-  <div class="cover-brand-icon">GE</div>
   <div class="cover-brand">CAPCO</div>
-  <div class="cover-accent-line"></div>
-  <div class="cover-solution-name"><span>BA Genie</span></div>
+  <div class="cover-accent-bar"></div>
+  <div class="cover-solution-name">BA Genie</div>
   <div class="cover-tagline">
     AI-powered requirements engineering that transforms the SDLC by automating the generation of accurate, complete epics, features, stories, and test cases.
   </div>
   <div class="cover-meta">
     <span>Capco AI Lab</span>
-    <div class="divider"></div>
+    <div class="dot"></div>
     <span>Financial Services</span>
-    <div class="divider"></div>
+    <div class="dot"></div>
     <span>SDLC Transformation</span>
   </div>
+  <div class="cover-stripe"></div>
 </div>
 
 
 <!-- ════════════════════════════════════════════════════════════════
      SLIDE 2: PRE-FILLED ONE SLIDER (BA GENIE)
      ════════════════════════════════════════════════════════════════ -->
-<div class="slide-label">Slide 2 of 3 &mdash; Pre-filled (BA Genie)</div>
+<div class="slide-label">Slide 2 of 4 &mdash; Pre-filled (BA Genie)</div>
 <div class="slide slide-content">
   <div class="slide-header">
-    <div>
-      <div class="slide-title"><span>BA Genie</span> &mdash; SDLC Transformation</div>
-      <div class="slide-subtitle">AI-Powered Requirements Engineering for Financial Services</div>
+    <div class="header-left">
+      <div class="header-bar"></div>
+      <div>
+        <div class="slide-title">SDLC Transformation with BA Genie</div>
+        <div class="slide-subtitle">
+          <span class="tag">Financial Services</span>
+          <span class="tag">Requirements Engineering</span>
+          <span class="tag">Custom AI Solution</span>
+        </div>
+      </div>
     </div>
-    <div class="slide-brand-sm">CAPCO</div>
+    <div class="slide-brand">CAPCO</div>
   </div>
 
+  <!-- Metrics Banner -->
+  <div class="metrics-banner">
+    <div class="metric">
+      <div class="metric-value accent-pink">45%</div>
+      <div class="metric-label">Reduction in<br>manual effort</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-navy">1.5x</div>
+      <div class="metric-label">Throughput<br>increase</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-purple">~19.5%</div>
+      <div class="metric-label">Total cost<br>saving</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-blue">2 wk</div>
+      <div class="metric-label">Pilot to<br>production</div>
+    </div>
+  </div>
+
+  <!-- Three Columns -->
   <div class="columns">
     <!-- Column 1: Business Problem -->
     <div class="column">
-      <div class="col-number">01</div>
-      <div class="col-heading">Business Problem &amp; Complications</div>
+      <div class="col-header">
+        <div class="col-number">1</div>
+        <div class="col-heading">Problem &amp; Complications</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>Requirements gathering is manual, inconsistent, and consumes 30% of project timelines, delaying time-to-market for critical initiatives</li>
-        <li>64% of failed projects trace back to errors introduced during requirements and design phases, driving costly rework downstream</li>
-        <li>Fixing requirements defects post-development costs 15x more than catching them early, eroding project margins at scale</li>
-        <li>Institutional knowledge lives in individual heads &mdash; when BAs leave, context is lost, creating single points of failure across programs</li>
-        <li>Existing tools (Jira, Confluence) store artifacts but don't generate or validate them, leaving the hardest work entirely manual</li>
+        <li><strong>Requirements are the #1 bottleneck</strong> in SDLC &mdash; 30% of tech projects delayed by specification gaps</li>
+        <li><strong>64% of failed projects</strong> trace root cause to errors in requirements gathering and design phases</li>
+        <li><strong>Rework costs 15x more</strong> when defects from requirements surface in testing or production</li>
+        <li><strong>BAs spend most time on low-value tasks</strong> &mdash; formatting, consistency checks, and re-writing</li>
+        <li><strong>No scalable alternative</strong> &mdash; off-the-shelf tools lack financial services domain and regulatory context</li>
       </ul>
     </div>
 
     <!-- Column 2: AI Solution & Features -->
     <div class="column">
-      <div class="col-number">02</div>
-      <div class="col-heading">AI Solution &amp; Key Features</div>
+      <div class="col-header">
+        <div class="col-number">2</div>
+        <div class="col-heading">AI Solution &amp; Features</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>Custom-built AI engine generates complete, structured epics, features, user stories, and test cases from high-level business intent</li>
-        <li>Deploys directly into your environment &mdash; integrates with existing SDLC toolchains with zero disruption to current workflows</li>
-        <li>Fully tailored to your organization's standards, templates, and domain-specific terminology for Financial Services regulatory context</li>
-        <li>Built-in intelligent scoping and impact analysis identifies upstream and downstream dependencies before a single line of code is written</li>
-        <li>Trained on a curated corpus of relevant regulatory and industry documentation, providing consistent institutional memory at scale</li>
+        <li><strong>Automates generation</strong> of epics, features, user stories, and test cases from high-level inputs</li>
+        <li><strong>Custom-built AI</strong> trained on 6 corpuses of regulatory and standards documents specific to client</li>
+        <li><strong>Outputs conform to internal standards</strong> &mdash; templates, taxonomy, and acceptance criteria formats</li>
+        <li><strong>Model &amp; tech agnostic architecture</strong> &mdash; swap underlying LLMs as capabilities evolve</li>
+        <li><strong>Zero-disruption deployment</strong> &mdash; runs in parallel to existing pipelines; pilot in 2 weeks</li>
       </ul>
     </div>
 
     <!-- Column 3: Impact -->
     <div class="column">
-      <div class="col-number">03</div>
-      <div class="col-heading">Impact &amp; Outcomes</div>
+      <div class="col-header">
+        <div class="col-number">3</div>
+        <div class="col-heading">Impact &amp; Outcomes</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>Up to 45% reduction in manual BA effort, freeing senior analysts to focus on stakeholder alignment and strategic decisions</li>
-        <li>Estimated 19.5% total cost savings per project through fewer defects, less rework, and compressed requirements cycles</li>
-        <li>Requirements are accurate, complete, and consistent &mdash; eliminating the variability that comes with different analysts on different days</li>
-        <li>From kickoff to live pilot in 7 weeks &mdash; fast enough to prove value within a single quarter without a multi-year transformation</li>
-        <li>Scalable across teams and programs without proportional headcount growth, enabling enterprise-wide standardization of BA output quality</li>
+        <li><strong>Up to 45% reduction</strong> in manual effort for requirements authoring across the team</li>
+        <li><strong>1.5x throughput</strong> &mdash; more complete, higher-quality requirements delivered in less time</li>
+        <li><strong>Accuracy, completeness, consistency</strong> improved from first draft &mdash; less review cycles</li>
+        <li><strong>BAs shift to high-value work</strong> &mdash; stakeholder engagement, edge-case analysis, strategy</li>
+        <li><strong>Sustainable &amp; scalable</strong> &mdash; designed for growing teams; full pilot-to-production in 7 weeks</li>
       </ul>
     </div>
   </div>
 
+  <div class="slide-footer-bar"></div>
   <div class="slide-footer">
-    <span>Capco Confidential</span>
-    <span>Demo One Slider &mdash; BA Genie</span>
+    <div class="footer-left">
+      <div class="footer-dot"></div>
+      <span>Confidential &mdash; Capco</span>
+    </div>
+    <div class="footer-right">
+      <span>BA Genie</span>
+      <div class="dot"></div>
+      <span>SDLC / Engineering</span>
+      <div class="dot"></div>
+      <span>Financial Services</span>
+    </div>
   </div>
 </div>
 
@@ -374,92 +544,136 @@
 <!-- ════════════════════════════════════════════════════════════════
      SLIDE 3: COVER — TEMPLATE
      ════════════════════════════════════════════════════════════════ -->
-<div class="slide-label">Slide 3 of 5 &mdash; Cover Template</div>
+<div class="slide-label">Slide 3 of 4 &mdash; Cover Template</div>
 <div class="slide slide-cover">
-  <div class="cover-brand-icon">GE</div>
   <div class="cover-brand">CAPCO</div>
-  <div class="cover-accent-line"></div>
-  <div class="cover-solution-name" style="color: #4a6a80; font-style: italic;">[Solution Name]</div>
-  <div class="cover-tagline" style="color: #3a5a6a; font-style: italic;">
+  <div class="cover-accent-bar"></div>
+  <div class="cover-solution-name" style="opacity: 0.4; font-style: italic;">[Solution Name]</div>
+  <div class="cover-tagline" style="opacity: 0.35; font-style: italic;">
     [One sentence describing what this solution does and who it serves. Keep it concise and executive-ready.]
   </div>
   <div class="cover-meta">
     <span style="opacity:0.5;">[Team / Lab]</span>
-    <div class="divider"></div>
+    <div class="dot"></div>
     <span style="opacity:0.5;">[Industry]</span>
-    <div class="divider"></div>
+    <div class="dot"></div>
     <span style="opacity:0.5;">[Domain]</span>
   </div>
+  <div class="cover-stripe"></div>
 </div>
 
 
 <!-- ════════════════════════════════════════════════════════════════
      SLIDE 4: BLANK TEMPLATE ONE SLIDER
      ════════════════════════════════════════════════════════════════ -->
-<div class="slide-label">Slide 4 of 5 &mdash; Blank Template</div>
+<div class="slide-label">Slide 4 of 4 &mdash; Blank Template</div>
 <div class="slide slide-content template">
   <div class="slide-header">
-    <div>
-      <div class="slide-title" style="color: #4a6a80; font-style: italic;">[Solution Name] &mdash; [Domain]</div>
-      <div class="slide-subtitle" style="font-style: italic;">[One-line description of the solution and target audience]</div>
+    <div class="header-left">
+      <div class="header-bar"></div>
+      <div>
+        <div class="slide-title" style="color: #b0b8c4; font-style: italic;">[Solution Title with Solution Name]</div>
+        <div class="slide-subtitle">
+          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Industry]</span>
+          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Domain]</span>
+          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Solution Type]</span>
+        </div>
+      </div>
     </div>
-    <div class="slide-brand-sm">CAPCO</div>
+    <div class="slide-brand">CAPCO</div>
   </div>
 
+  <!-- Metrics Banner - Template -->
+  <div class="metrics-banner">
+    <div class="metric">
+      <div class="metric-value accent-pink">[XX%]</div>
+      <div class="metric-label">[Primary<br>metric]</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-navy">[X.Xx]</div>
+      <div class="metric-label">[Throughput<br>or speed]</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-purple">[~XX%]</div>
+      <div class="metric-label">[Cost or<br>efficiency]</div>
+    </div>
+    <div class="metric">
+      <div class="metric-value accent-blue">[X wk]</div>
+      <div class="metric-label">[Time to<br>value]</div>
+    </div>
+  </div>
+
+  <!-- Three Columns - Template -->
   <div class="columns">
-    <!-- Column 1: Business Problem -->
     <div class="column">
-      <div class="col-number">01</div>
-      <div class="col-heading">Business Problem &amp; Complications</div>
+      <div class="col-header">
+        <div class="col-number">1</div>
+        <div class="col-heading">Problem &amp; Complications</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>[What is the business context? What process or function is affected?]</li>
-        <li>[What is the core problem? Quantify the pain if possible.]</li>
-        <li>[What makes this problem worse? What are the compounding effects?]</li>
-        <li>[Why hasn't this been solved already? What are the barriers?]</li>
-        <li>[What is the cost of inaction? What happens if nothing changes?]</li>
+        <li><strong>[Core problem]</strong> &mdash; what is the business context and what process is affected?</li>
+        <li><strong>[Quantified pain]</strong> &mdash; what does this cost in time, money, or quality?</li>
+        <li><strong>[Compounding effect]</strong> &mdash; what makes this problem worse over time?</li>
+        <li><strong>[Barrier to solving]</strong> &mdash; why hasn't this been solved already?</li>
+        <li><strong>[Cost of inaction]</strong> &mdash; what happens if nothing changes?</li>
       </ul>
     </div>
 
-    <!-- Column 2: AI Solution & Features -->
     <div class="column">
-      <div class="col-number">02</div>
-      <div class="col-heading">AI Solution &amp; Key Features</div>
+      <div class="col-header">
+        <div class="col-number">2</div>
+        <div class="col-heading">AI Solution &amp; Features</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>[What is the solution at a high level? What does it do?]</li>
-        <li>[Key feature #1 &mdash; what capability does it provide?]</li>
-        <li>[Key feature #2 &mdash; how does it integrate or deploy?]</li>
-        <li>[What makes this differentiated from alternatives or manual processes?]</li>
-        <li>[Why is this the right approach? What makes it defensible?]</li>
+        <li><strong>[What it does]</strong> &mdash; describe the solution at a high level</li>
+        <li><strong>[Key capability #1]</strong> &mdash; most important feature or function</li>
+        <li><strong>[Key capability #2]</strong> &mdash; how it integrates or deploys</li>
+        <li><strong>[Differentiation]</strong> &mdash; what makes this better than alternatives?</li>
+        <li><strong>[Deployment model]</strong> &mdash; how quickly can it go live?</li>
       </ul>
     </div>
 
-    <!-- Column 3: Impact -->
     <div class="column">
-      <div class="col-number">03</div>
-      <div class="col-heading">Impact &amp; Outcomes</div>
+      <div class="col-header">
+        <div class="col-number">3</div>
+        <div class="col-heading">Impact &amp; Outcomes</div>
+      </div>
+      <div class="col-rule"></div>
       <ul class="bullet-list">
-        <li>[Primary quantitative metric &mdash; e.g., % cost reduction, time saved]</li>
-        <li>[Secondary quantitative metric &mdash; e.g., error reduction, throughput]</li>
-        <li>[Qualitative improvement &mdash; e.g., consistency, compliance, experience]</li>
-        <li>[Speed to value &mdash; how quickly can results be realized?]</li>
-        <li>[Scalability &mdash; what does this unlock at enterprise level?]</li>
+        <li><strong>[Primary metric]</strong> &mdash; e.g., % reduction in effort, cost, or time</li>
+        <li><strong>[Secondary metric]</strong> &mdash; e.g., throughput increase, error reduction</li>
+        <li><strong>[Quality improvement]</strong> &mdash; e.g., accuracy, consistency, compliance</li>
+        <li><strong>[Workforce impact]</strong> &mdash; how does this change how people work?</li>
+        <li><strong>[Scalability]</strong> &mdash; what does this unlock at enterprise level?</li>
       </ul>
     </div>
   </div>
 
+  <div class="slide-footer-bar"></div>
   <div class="slide-footer">
-    <span>Capco Confidential</span>
-    <span>Demo One Slider &mdash; [Solution Name]</span>
+    <div class="footer-left">
+      <div class="footer-dot"></div>
+      <span>Confidential &mdash; Capco</span>
+    </div>
+    <div class="footer-right">
+      <span style="font-style:italic; color:#b0b8c4;">[Solution Name]</span>
+      <div class="dot"></div>
+      <span style="font-style:italic; color:#b0b8c4;">[Domain]</span>
+      <div class="dot"></div>
+      <span style="font-style:italic; color:#b0b8c4;">[Industry]</span>
+    </div>
   </div>
 </div>
 
-<!-- ═══ Instructions Note ═══ -->
-<div style="width:1280px; padding: 30px 44px; background: rgba(90,184,184,0.05); border: 1px solid rgba(90,184,184,0.12); border-radius: 6px; margin-top: -20px;">
-  <div style="font-size: 14px; font-weight: 600; color: #5ab8b8; margin-bottom: 12px;">How to Use This Template</div>
-  <div style="font-size: 13px; color: #7a8a9e; line-height: 1.7;">
-    <strong>Slides 1 &amp; 2</strong> are pre-filled with the BA Genie demo &mdash; use as a reference for tone, depth, and formatting.<br>
-    <strong>Slides 3 &amp; 4</strong> are your blank template &mdash; replace all <code style="background:rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 3px;">[bracketed text]</code> with your solution's content.<br><br>
-    <strong>Guidelines:</strong> Keep bullets exec-level (outcome-oriented, not technical). Quantify where possible (estimates are fine). Each bullet should be one sentence. Aim for the "why it matters" not the "how it works."
+<!-- ═══ Instructions ═══ -->
+<div class="instructions-box" style="width:1400px; padding: 28px 44px; background: #ffffff; border: 1px solid #e0e4ea; border-radius: 8px; margin-top: -20px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+  <div style="font-size: 14px; font-weight: 700; color: #0f1b2d; margin-bottom: 10px;">How to Use This Template</div>
+  <div style="font-size: 13px; color: #5a6678; line-height: 1.8;">
+    <strong style="color:#e84393;">Slides 1 &amp; 2</strong> are pre-filled with the BA Genie demo &mdash; use as a reference for tone, depth, and formatting.<br>
+    <strong style="color:#0984e3;">Slides 3 &amp; 4</strong> are your blank template &mdash; replace all <code style="background:#f0f2f5; padding: 2px 8px; border-radius: 4px; color:#6c5ce7; font-weight:600;">[bracketed text]</code> with your solution's content.<br><br>
+    <strong>Guidelines:</strong> Keep bullets exec-level (outcome-oriented, not technical). Lead each bullet with a <strong>bolded key phrase</strong>. Quantify where possible (estimates are fine). Fill in the 4 metrics at the top with your strongest numbers.
   </div>
 </div>
 
