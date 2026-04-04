@@ -39,60 +39,50 @@
     box-shadow: 0 8px 40px rgba(0,0,0,0.12);
   }
 
-  /* ─── COVER SLIDE ─── */
+  /* ═══════════════════════════════════════
+     COVER SLIDE
+     ═══════════════════════════════════════ */
   .slide-cover {
-    background: linear-gradient(135deg, #0f1b2d 0%, #162544 40%, #1a2a4a 100%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 80px;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 780px;
     position: relative;
     overflow: hidden;
   }
 
-  /* Decorative glow orbs */
-  .cover-glow-1 {
+  .cover-left {
+    background: linear-gradient(145deg, #0f1b2d 0%, #162a4a 60%, #1e3460 100%);
+    padding: 70px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover-left::before {
+    content: '';
     position: absolute;
-    width: 500px;
-    height: 500px;
+    top: -80px;
+    right: -80px;
+    width: 350px;
+    height: 350px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
-    top: -150px;
-    right: -100px;
+    background: radial-gradient(circle, rgba(108, 92, 231, 0.2) 0%, transparent 70%);
     pointer-events: none;
   }
 
-  .cover-glow-2 {
+  .cover-left::after {
+    content: '';
     position: absolute;
-    width: 600px;
-    height: 600px;
+    bottom: -60px;
+    left: -40px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(232, 67, 147, 0.1) 0%, transparent 70%);
-    bottom: -200px;
-    left: -150px;
+    background: radial-gradient(circle, rgba(232, 67, 147, 0.15) 0%, transparent 70%);
     pointer-events: none;
-  }
-
-  .cover-glow-3 {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(9, 132, 227, 0.12) 0%, transparent 70%);
-    bottom: 100px;
-    right: 200px;
-    pointer-events: none;
-  }
-
-  .cover-top-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3, #00cec9);
   }
 
   .cover-ai-badge {
@@ -100,16 +90,16 @@
     align-items: center;
     gap: 8px;
     background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 100px;
-    padding: 8px 22px;
+    padding: 8px 20px;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: #00cec9;
-    margin-bottom: 40px;
-    backdrop-filter: blur(10px);
+    margin-bottom: 32px;
+    width: fit-content;
     z-index: 1;
   }
 
@@ -122,86 +112,158 @@
   }
 
   .cover-solution-name {
-    font-size: 64px;
+    font-size: 58px;
     font-weight: 900;
     color: #ffffff;
     letter-spacing: -2px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     line-height: 1.05;
     z-index: 1;
-    background: linear-gradient(135deg, #ffffff 30%, #a0d2ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 
   .cover-tagline {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 300;
     color: #8ea8c4;
-    max-width: 720px;
+    max-width: 520px;
     line-height: 1.7;
-    margin-bottom: 52px;
     z-index: 1;
   }
 
-  .cover-meta {
+  .cover-right {
     display: flex;
-    gap: 0;
-    align-items: center;
-    font-size: 12px;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 500;
-    z-index: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 70px 60px;
+    position: relative;
   }
 
-  .cover-meta .meta-pill {
-    padding: 6px 18px;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 4px;
-    margin: 0 4px;
-    background: rgba(255,255,255,0.03);
-    transition: background 0.2s;
+  .cover-right-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8892a6;
+    margin-bottom: 28px;
+  }
+
+  .cover-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    width: 100%;
+  }
+
+  .cover-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .cover-highlight-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 800;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  .cover-highlight:nth-child(1) .cover-highlight-icon { background: #e84393; }
+  .cover-highlight:nth-child(2) .cover-highlight-icon { background: #0f1b2d; }
+  .cover-highlight:nth-child(3) .cover-highlight-icon { background: #0984e3; }
+
+  .cover-highlight-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 2px;
+  }
+
+  .cover-highlight-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f1b2d;
+  }
+
+  .cover-highlight-desc {
+    font-size: 13px;
+    color: #6b7a8d;
+    line-height: 1.5;
+  }
+
+  .cover-meta-pills {
+    display: flex;
+    gap: 8px;
+    margin-top: 36px;
+  }
+
+  .cover-meta-pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #5a6678;
+    background: #f0f2f5;
+    border: 1px solid #e0e4ea;
   }
 
   .cover-brand {
     position: absolute;
-    top: 40px;
+    top: 36px;
     right: 48px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     letter-spacing: 5px;
-    color: #ffffff;
-    opacity: 0.5;
+    color: #0f1b2d;
     z-index: 1;
   }
 
-  .cover-stripe {
+  .cover-top-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3, #00cec9);
+  }
+
+  .cover-copyright {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3, #00cec9);
-    z-index: 1;
+    background: #1a1e2a;
+    padding: 10px 48px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    z-index: 2;
   }
 
-  /* ─── CONTENT SLIDE ─── */
+  /* ═══════════════════════════════════════
+     CONTENT SLIDE
+     ═══════════════════════════════════════ */
   .slide-content {
     background: #ffffff;
     display: flex;
     flex-direction: column;
   }
 
-  /* ─── Header ─── */
+  /* ─── Dark Header Banner ─── */
   .slide-header {
-    padding: 28px 48px 24px;
+    padding: 24px 48px 20px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    border-bottom: 3px solid #0f1b2d;
+    background: #0f1b2d;
+    color: #ffffff;
   }
 
   .header-left {
@@ -213,7 +275,7 @@
   .header-bar {
     width: 4px;
     height: 48px;
-    background: linear-gradient(180deg, #e84393, #6c5ce7);
+    background: #e84393;
     border-radius: 2px;
     flex-shrink: 0;
     margin-top: 2px;
@@ -222,13 +284,13 @@
   .slide-title {
     font-size: 24px;
     font-weight: 700;
-    color: #0f1b2d;
+    color: #ffffff;
     line-height: 1.2;
   }
 
   .slide-subtitle {
     font-size: 13px;
-    color: #6b7a8d;
+    color: rgba(255,255,255,0.5);
     font-weight: 400;
     margin-top: 4px;
     display: flex;
@@ -247,7 +309,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #6b7a8d;
+    background: rgba(255,255,255,0.35);
   }
 
   .slide-subtitle .tag:first-child::before { display: none; }
@@ -256,17 +318,17 @@
     font-size: 15px;
     font-weight: 800;
     letter-spacing: 4px;
-    color: #0f1b2d;
+    color: rgba(255,255,255,0.5);
   }
 
-  /* ─── Metrics Banner ─── */
+  /* ─── Metrics Banner — Light Grey ─── */
   .metrics-banner {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 0;
     padding: 0;
-    background: #0f1b2d;
-    border-bottom: none;
+    background: #f4f5f7;
+    border-bottom: 1px solid #e0e4ea;
   }
 
   .metric {
@@ -274,7 +336,7 @@
     align-items: baseline;
     gap: 12px;
     padding: 26px 34px;
-    border-right: 1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid #e0e4ea;
     position: relative;
   }
 
@@ -288,13 +350,13 @@
   }
 
   .metric-value.accent-pink { color: #e84393; }
-  .metric-value.accent-navy { color: #00cec9; }
-  .metric-value.accent-purple { color: #a29bfe; }
-  .metric-value.accent-blue { color: #74b9ff; }
+  .metric-value.accent-navy { color: #0f1b2d; }
+  .metric-value.accent-purple { color: #6c5ce7; }
+  .metric-value.accent-blue { color: #0984e3; }
 
   .metric-label {
     font-size: 13px;
-    color: rgba(255,255,255,0.55);
+    color: #6b7a8d;
     font-weight: 500;
     line-height: 1.35;
   }
@@ -438,23 +500,29 @@
     background: #c0c8d4;
   }
 
-  .slide-footer-bar {
-    height: 4px;
-    background: linear-gradient(90deg, #e84393, #6c5ce7, #0984e3);
+  /* ─── Copyright Bar ─── */
+  .copyright-bar {
+    background: #1a1e2a;
+    padding: 10px 48px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    text-align: center;
   }
 
   /* ─── TEMPLATE SLIDE ─── */
   .template .metrics-banner {
-    background: #1a2540;
+    background: #f8f9fb;
   }
 
   .template .metric-value {
-    opacity: 0.3 !important;
+    opacity: 0.25 !important;
     font-style: italic;
   }
 
   .template .metric-label {
-    color: rgba(255,255,255,0.25);
+    color: #b0b8c4;
     font-style: italic;
   }
 
@@ -474,16 +542,6 @@
     opacity: 0.3;
   }
 
-  /* ─── Copyright Bar ─── */
-  .copyright-bar {
-    background: #1a1e2a;
-    padding: 10px 48px;
-    font-size: 11px;
-    color: rgba(255,255,255,0.4);
-    font-weight: 400;
-    letter-spacing: 0.3px;
-  }
-
   /* ─── Print ─── */
   @media print {
     body { background: white; padding: 0; gap: 0; }
@@ -500,26 +558,53 @@
      ════════════════════════════════════════════════════════════════ -->
 <div class="slide-label">Slide 1 of 4 &mdash; Cover</div>
 <div class="slide slide-cover">
-  <div class="cover-glow-1"></div>
-  <div class="cover-glow-2"></div>
-  <div class="cover-glow-3"></div>
-  <div class="cover-top-line"></div>
+  <div class="cover-top-stripe"></div>
   <div class="cover-brand">CAPCO</div>
-  <div class="cover-ai-badge">
-    <div class="badge-dot"></div>
-    Capco AI Lab
+
+  <div class="cover-left">
+    <div class="cover-ai-badge">
+      <div class="badge-dot"></div>
+      Capco AI Lab
+    </div>
+    <div class="cover-solution-name">BA Genie</div>
+    <div class="cover-tagline">
+      AI-powered requirements engineering that transforms the SDLC by automating the generation of accurate, complete epics, features, stories, and test cases.
+    </div>
   </div>
-  <div class="cover-solution-name">BA Genie</div>
-  <div class="cover-tagline">
-    AI-powered requirements engineering that transforms the SDLC by automating the generation of accurate, complete epics, features, stories, and test cases.
+
+  <div class="cover-right">
+    <div class="cover-right-label">At a Glance</div>
+    <div class="cover-highlights">
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">1</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title">The Problem</div>
+          <div class="cover-highlight-desc">Manual requirements gathering delays 30% of projects and drives costly rework downstream</div>
+        </div>
+      </div>
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">2</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title">The Solution</div>
+          <div class="cover-highlight-desc">Custom-built AI that generates complete epics, stories, and test cases from business intent</div>
+        </div>
+      </div>
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">3</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title">The Impact</div>
+          <div class="cover-highlight-desc">45% reduction in manual effort, 19.5% cost savings, pilot-to-production in 7 weeks</div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-meta-pills">
+      <span class="cover-meta-pill">Financial Services</span>
+      <span class="cover-meta-pill">Requirements Engineering</span>
+      <span class="cover-meta-pill">Custom AI Solution</span>
+    </div>
   </div>
-  <div class="cover-meta">
-    <span class="meta-pill">Financial Services</span>
-    <span class="meta-pill">Requirements Engineering</span>
-    <span class="meta-pill">Custom AI Solution</span>
-  </div>
-  <div class="cover-stripe"></div>
-  <div class="copyright-bar" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.3); text-align:center; z-index:2;">&copy; 2026 The Capital Markets Company. Capco Confidential. All rights reserved.</div>
+
+  <div class="cover-copyright">&copy; 2026 The Capital Markets Company. Capco Confidential. All rights reserved.</div>
 </div>
 
 
@@ -543,7 +628,7 @@
     <div class="slide-brand">CAPCO</div>
   </div>
 
-  <!-- Metrics Banner -->
+  <!-- Metrics Banner — Light Grey -->
   <div class="metrics-banner">
     <div class="metric">
       <div class="metric-value accent-pink">45%</div>
@@ -614,7 +699,6 @@
     </div>
   </div>
 
-  <div class="slide-footer-bar"></div>
   <div class="slide-footer">
     <div class="footer-left">
       <div class="footer-dot"></div>
@@ -637,26 +721,53 @@
      ════════════════════════════════════════════════════════════════ -->
 <div class="slide-label">Slide 3 of 4 &mdash; Cover Template</div>
 <div class="slide slide-cover">
-  <div class="cover-glow-1"></div>
-  <div class="cover-glow-2"></div>
-  <div class="cover-glow-3"></div>
-  <div class="cover-top-line"></div>
+  <div class="cover-top-stripe"></div>
   <div class="cover-brand">CAPCO</div>
-  <div class="cover-ai-badge" style="opacity: 0.4;">
-    <div class="badge-dot"></div>
-    [Team / Lab]
+
+  <div class="cover-left">
+    <div class="cover-ai-badge" style="opacity:0.4;">
+      <div class="badge-dot"></div>
+      [Team / Lab]
+    </div>
+    <div class="cover-solution-name" style="opacity:0.4; font-style:italic;">[Solution Name]</div>
+    <div class="cover-tagline" style="opacity:0.35; font-style:italic;">
+      [One sentence describing what this solution does and who it serves. Keep it concise and executive-ready.]
+    </div>
   </div>
-  <div class="cover-solution-name" style="opacity: 0.35; font-style: italic; -webkit-text-fill-color: rgba(255,255,255,0.35);">[Solution Name]</div>
-  <div class="cover-tagline" style="opacity: 0.3; font-style: italic;">
-    [One sentence describing what this solution does and who it serves. Keep it concise and executive-ready.]
+
+  <div class="cover-right">
+    <div class="cover-right-label">At a Glance</div>
+    <div class="cover-highlights">
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">1</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title" style="color:#b0b8c4; font-style:italic;">The Problem</div>
+          <div class="cover-highlight-desc" style="color:#c0c8d4; font-style:italic;">[One sentence on the core business problem]</div>
+        </div>
+      </div>
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">2</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title" style="color:#b0b8c4; font-style:italic;">The Solution</div>
+          <div class="cover-highlight-desc" style="color:#c0c8d4; font-style:italic;">[One sentence on what the AI solution does]</div>
+        </div>
+      </div>
+      <div class="cover-highlight">
+        <div class="cover-highlight-icon">3</div>
+        <div class="cover-highlight-text">
+          <div class="cover-highlight-title" style="color:#b0b8c4; font-style:italic;">The Impact</div>
+          <div class="cover-highlight-desc" style="color:#c0c8d4; font-style:italic;">[Key metrics and qualitative outcomes]</div>
+        </div>
+      </div>
+    </div>
+    <div class="cover-meta-pills">
+      <span class="cover-meta-pill" style="opacity:0.5; font-style:italic;">[Industry]</span>
+      <span class="cover-meta-pill" style="opacity:0.5; font-style:italic;">[Domain]</span>
+      <span class="cover-meta-pill" style="opacity:0.5; font-style:italic;">[Solution Type]</span>
+    </div>
   </div>
-  <div class="cover-meta">
-    <span class="meta-pill" style="opacity:0.4;">[Industry]</span>
-    <span class="meta-pill" style="opacity:0.4;">[Domain]</span>
-    <span class="meta-pill" style="opacity:0.4;">[Solution Type]</span>
-  </div>
-  <div class="cover-stripe"></div>
-  <div class="copyright-bar" style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.3); text-align:center; z-index:2;">&copy; 2026 The Capital Markets Company. Capco Confidential. All rights reserved.</div>
+
+  <div class="cover-copyright">&copy; 2026 The Capital Markets Company. Capco Confidential. All rights reserved.</div>
 </div>
 
 
@@ -669,11 +780,11 @@
     <div class="header-left">
       <div class="header-bar"></div>
       <div>
-        <div class="slide-title" style="color: #b0b8c4; font-style: italic;">[Solution Title with Solution Name]</div>
+        <div class="slide-title" style="opacity:0.5; font-style:italic;">[Solution Title with Solution Name]</div>
         <div class="slide-subtitle">
-          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Industry]</span>
-          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Domain]</span>
-          <span class="tag" style="color: #b0b8c4; font-style: italic;">[Solution Type]</span>
+          <span class="tag" style="opacity:0.5; font-style:italic;">[Industry]</span>
+          <span class="tag" style="opacity:0.5; font-style:italic;">[Domain]</span>
+          <span class="tag" style="opacity:0.5; font-style:italic;">[Solution Type]</span>
         </div>
       </div>
     </div>
@@ -748,18 +859,17 @@
     </div>
   </div>
 
-  <div class="slide-footer-bar"></div>
   <div class="slide-footer">
     <div class="footer-left">
       <div class="footer-dot"></div>
       <span>Confidential &mdash; Capco</span>
     </div>
     <div class="footer-right">
-      <span style="font-style:italic; color:#b0b8c4;">[Solution Name]</span>
+      <span style="font-style:italic; color:rgba(255,255,255,0.3);">[Solution Name]</span>
       <div class="dot"></div>
-      <span style="font-style:italic; color:#b0b8c4;">[Domain]</span>
+      <span style="font-style:italic; color:rgba(255,255,255,0.3);">[Domain]</span>
       <div class="dot"></div>
-      <span style="font-style:italic; color:#b0b8c4;">[Industry]</span>
+      <span style="font-style:italic; color:rgba(255,255,255,0.3);">[Industry]</span>
     </div>
   </div>
   <div class="copyright-bar">&copy; 2026 The Capital Markets Company. Capco Confidential. All rights reserved.</div>
