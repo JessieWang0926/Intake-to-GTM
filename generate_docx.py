@@ -301,7 +301,7 @@ doc.add_page_break()
 # Step 3
 add_step_heading(doc, 3, "AI Enablement Team Review", "Assessment")
 add_task_table(doc, [
-    ("Determine scope: **POC / MVP / Full Build** based on business value & tech depth", "AI Enablement Team"),
+    ("**Evaluate use case** based on business value & tech depth", "AI Enablement Team"),
     ("Assess **strategic alignment**, data maturity & regulatory impact", "AI Enablement Team + AI Champion"),
     ("**Confirm resource availability** across AI Forward Engineers", "AI Enablement Team"),
     ("Prioritize **top 1\u20132 use cases** per champion for development", "AI Enablement Team"),
@@ -314,7 +314,7 @@ add_step_heading(doc, 4, "Project Setup & Resource Allocation", "Setup")
 add_task_table(doc, [
     ("**Asset Register** \u2014 Model the AI solution into asset register (MP and above)", "Business Sponsor"),
     ("**Set Up Jira & Project Folder** \u2014 Create Jira project and project folder structure (epics, stories & backlog defined during build)", "AI Enablement Team"),
-    ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Enablement Team"),
+    ("**Allocate Resources** \u2014 Assign AI Forward Engineers", "AI Enablement Team"),
     ("**Set up healthy check-in cadence** \u2014 demo \u2192 feedback \u2192 refine cycles (keep AI Enablement in the loop)", "AI Champion + AI Fwd Engineer"),
 ], 4)
 doc.add_page_break()
@@ -323,7 +323,7 @@ doc.add_page_break()
 add_step_heading(doc, 5, "Define the MVP & Build", "Build")
 add_task_table(doc, [
     ("**Define MVP scope** \u2014 features, demo expectations & success criteria", "AI Fwd Engineer + AI Champion"),
-    ("Develop through **sprint cycles** with iterative testing & user feedback", "AI Fwd Engineer + AI Enablement Team"),
+    ("Develop through **sprint cycles** with iterative testing & user feedback", "AI Fwd Engineer + AI Enablement Team + AI Champion"),
     ("Provide **sample data & real-life use case scenarios** to guide the build", "AI Champion"),
     ("Build **demo environment** based on provided scenarios & data", "AI Forward Engineer"),
     ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "AI Enablement Team"),
@@ -369,7 +369,7 @@ add_task_table(doc, [
     ("Track **CTAR** (Client Target Account Revenue): pipeline generated, deals won, revenue attributed to each AI solution", "AI Enablement + AI Champion + Sponsor"),
     ("Monitor **revenue metrics per solution**: total pipeline value, win rate, average deal size & time-to-close", "AI Enablement + Business Sponsor"),
     ("Monitor maturity: Idea \u2192 In Build \u2192 Demo-Ready \u2192 GTM-Ready \u2192 **In Pursuit**", "AI Enablement Team"),
-    ("Capture **client feedback** & feed learnings back into next intake cycle", "AI Champion + Domain Leader"),
+    ("Capture **client feedback** & feed learnings back into next intake cycle", "AI Champion + Domain Leader + AI Enablement Team"),
 ], 8)
 
 # Loop callout
