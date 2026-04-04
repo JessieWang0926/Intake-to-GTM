@@ -27,7 +27,7 @@ font.color.rgb = RGBColor(0x33, 0x33, 0x33)
 style.paragraph_format.space_after = Pt(4)
 style.paragraph_format.line_spacing = 1.15
 
-# Heading styles - each level gets a distinct look
+# Heading styles
 h1 = doc.styles['Heading 1']
 h1.font.name = 'Calibri'
 h1.font.size = Pt(22)
@@ -62,49 +62,29 @@ COLORS = {
 }
 
 LIGHT_COLORS = {
-    1: "D6E4FF",  # Blue light
-    2: "D1FAE5",  # Emerald light
-    3: "FEF3C7",  # Amber light
-    4: "FFE4E6",  # Rose light
-    5: "EDE9FE",  # Violet light
-    6: "CFFAFE",  # Cyan light
-    7: "FFEDD5",  # Orange light
-    8: "CCFBF1",  # Teal light
+    1: "D6E4FF",
+    2: "D1FAE5",
+    3: "FEF3C7",
+    4: "FFE4E6",
+    5: "EDE9FE",
+    6: "CFFAFE",
+    7: "FFEDD5",
+    8: "CCFBF1",
 }
 
-GATE_COLOR = RGBColor(0xDC, 0x26, 0x26)
-GATE_LIGHT = "FEE2E2"
 GRAY = RGBColor(0x6B, 0x72, 0x80)
 
 
 def set_cell_shading(cell, hex_color):
-    """Set background color of a table cell."""
     shading = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{hex_color}"/>')
     cell._tc.get_or_add_tcPr().append(shading)
 
 
-def set_cell_borders(cell, color="CCCCCC"):
-    """Set thin borders on cell."""
-    tc = cell._tc
-    tcPr = tc.get_or_add_tcPr()
-    borders = parse_xml(
-        f'<w:tcBorders {nsdecls("w")}>'
-        f'  <w:top w:val="single" w:sz="4" w:color="{color}"/>'
-        f'  <w:left w:val="single" w:sz="4" w:color="{color}"/>'
-        f'  <w:bottom w:val="single" w:sz="4" w:color="{color}"/>'
-        f'  <w:right w:val="single" w:sz="4" w:color="{color}"/>'
-        f'</w:tcBorders>'
-    )
-    tcPr.append(borders)
-
-
 def add_task_table(doc, tasks, step_num):
-    """Add a colored task table: columns = Task | Owner."""
     table = doc.add_table(rows=1 + len(tasks), cols=2)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = True
 
-    # Set column widths
     for row in table.rows:
         row.cells[0].width = Cm(12)
         row.cells[1].width = Cm(4.5)
@@ -120,25 +100,22 @@ def add_task_table(doc, tasks, step_num):
         run.font.color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
         run.font.name = 'Calibri'
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT if i == 0 else WD_ALIGN_PARAGRAPH.RIGHT
-        # Color header with step color
         hex_c = str(COLORS[step_num])
         set_cell_shading(cell, hex_c)
 
     # Data rows
     for idx, (task, owner) in enumerate(tasks):
         row = table.rows[idx + 1]
-        # Task cell
         cell_t = row.cells[0]
         p = cell_t.paragraphs[0]
-        # Parse bold markers ** **
         parts = task.split("**")
         for j, part in enumerate(parts):
             run = p.add_run(part)
             run.font.size = Pt(10)
             run.font.name = 'Calibri'
-            if j % 2 == 1:  # odd parts are bold
+            if j % 2 == 1:
                 run.bold = True
-        # Owner cell
+
         cell_o = row.cells[1]
         p2 = cell_o.paragraphs[0]
         p2.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -148,21 +125,18 @@ def add_task_table(doc, tasks, step_num):
         run.font.name = 'Calibri'
         run.bold = True
 
-        # Alternate row shading
         if idx % 2 == 0:
             set_cell_shading(cell_t, LIGHT_COLORS[step_num])
             set_cell_shading(cell_o, LIGHT_COLORS[step_num])
 
-    doc.add_paragraph()  # spacer
+    doc.add_paragraph()
 
 
 def add_step_heading(doc, step_num, title, phase):
-    """Add a colored step heading."""
     p = doc.add_heading(f"Step {step_num}: {title}", level=1)
     for run in p.runs:
         run.font.color.rgb = COLORS[step_num]
 
-    # Phase tag
     p2 = doc.add_paragraph()
     run = p2.add_run(f"\u25CF  {phase.upper()}")
     run.font.size = Pt(9)
@@ -170,7 +144,6 @@ def add_step_heading(doc, step_num, title, phase):
     run.bold = True
     run.font.name = 'Calibri'
 
-    # Colored line
     p3 = doc.add_paragraph()
     p3.paragraph_format.space_before = Pt(0)
     p3.paragraph_format.space_after = Pt(6)
@@ -180,12 +153,8 @@ def add_step_heading(doc, step_num, title, phase):
 
 
 def add_gate(doc, title, subtitle, is_governance=False):
-    """Add a decision gate block."""
-    color = GATE_COLOR
-    light = GATE_LIGHT
-    if not is_governance:
-        color = RGBColor(0xF5, 0x9E, 0x0B)
-        light = "FEF3C7"
+    color = RGBColor(0xDC, 0x26, 0x26) if is_governance else RGBColor(0xF5, 0x9E, 0x0B)
+    light = "FEE2E2" if is_governance else "FEF3C7"
 
     table = doc.add_table(rows=1, cols=1)
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -207,7 +176,7 @@ def add_gate(doc, title, subtitle, is_governance=False):
     run.font.color.rgb = GRAY
     run.font.name = 'Calibri'
 
-    doc.add_paragraph()  # spacer
+    doc.add_paragraph()
 
 
 # ============================================================
@@ -216,14 +185,6 @@ def add_gate(doc, title, subtitle, is_governance=False):
 for _ in range(5):
     doc.add_paragraph()
 
-# Colored accent bar
-p = doc.add_paragraph()
-p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-colors_text = ["\u2588" * 5 + "  " for _ in range(8)]
-for i, c in enumerate(COLORS.values()):
-    pass  # We'll do a simpler approach
-
-# Title
 title = doc.add_paragraph()
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 run = title.add_run("AI Use Case Intake")
@@ -276,7 +237,7 @@ for _ in range(4):
 
 footer_p = doc.add_paragraph()
 footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = footer_p.add_run("Global GenAI Lab")
+run = footer_p.add_run("AI Power Team")
 run.font.size = Pt(14)
 run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
 run.bold = True
@@ -301,7 +262,7 @@ doc.add_paragraph()
 toc_items = [
     (1, "Identify & Generate AI Use Cases", "Ideation"),
     (2, "Submit Use Case Intake", "Intake"),
-    (3, "AI Lab Management Review", "Assessment"),
+    (3, "AI Enablement Team Review", "Assessment"),
     (0, "Release Gate Decision", ""),
     (4, "Project Setup & Resource Allocation", "Setup"),
     (5, "Define the MVP & Build", "Build"),
@@ -315,18 +276,15 @@ for num, title_text, phase in toc_items:
     p = doc.add_paragraph()
     p.paragraph_format.space_after = Pt(3)
     if num:
-        # Colored number
         run = p.add_run(f"  {num}.  ")
         run.font.size = Pt(13)
         run.font.color.rgb = COLORS[num]
         run.bold = True
         run.font.name = 'Calibri'
-        # Title
         run = p.add_run(title_text)
         run.font.size = Pt(12)
         run.font.color.rgb = RGBColor(0x1F, 0x29, 0x37)
         run.font.name = 'Calibri'
-        # Phase
         if phase:
             run = p.add_run(f"   {phase}")
             run.font.size = Pt(9)
@@ -342,22 +300,20 @@ for num, title_text, phase in toc_items:
 doc.add_page_break()
 
 # ============================================================
-# STEP 1: Identify & Generate AI Use Cases
+# STEP 1
 # ============================================================
 add_step_heading(doc, 1, "Identify & Generate AI Use Cases", "Ideation")
 
 add_task_table(doc, [
     ("**Talk to your Practice Lead** about client pain points and market gaps", "Practice Lead"),
-    ("**Domain Partner elects an AI Champion** to own use case ideation", "Domain Partner"),
     ("Brainstorm from in-flight projects, client conversations & market demand", "AI Champion"),
-    ("Check **Global Demo Catalog** (79+ solutions, 10 domains) to avoid duplication", "AI Champion"),
-    ("Identify **AI Infusion** opportunities in current fixed-fee projects", "AI Infusion Champion"),
+    ("Check **Demo Catalog** (79+ solutions, 10 domains) to avoid duplication. Interested in a solution? **Request a demo directly with the Product Owner**", "AI Champion"),
 ], 1)
 
 doc.add_page_break()
 
 # ============================================================
-# STEP 2: Submit Use Case Intake
+# STEP 2
 # ============================================================
 add_step_heading(doc, 2, "Submit Use Case Intake", "Intake")
 
@@ -374,17 +330,15 @@ add_task_table(doc, [
 doc.add_page_break()
 
 # ============================================================
-# STEP 3: AI Lab Management Review
+# STEP 3
 # ============================================================
-add_step_heading(doc, 3, "AI Lab Management Review", "Assessment")
+add_step_heading(doc, 3, "AI Enablement Team Review", "Assessment")
 
 add_task_table(doc, [
-    ("Determine scope: **POC / MVP / Full Build** based on business value & tech depth", "AI Lab Leadership"),
-    ("Assess **strategic alignment** and data maturity", "AI Lab Leadership"),
-    ("Perform **regulatory / compliance** impact analysis", "AI Lab Leadership + Sponsor"),
-    ("Confirm **resource availability** across AI Forward Engineers", "AI Lab Leadership"),
-    ("Obtain **Business Sponsor sign-off**", "Business Sponsor"),
-    ("Prioritize **top 1\u20132 use cases** per champion for development", "AI Lab Leadership"),
+    ("Determine scope: **POC / MVP / Full Build** based on business value & tech depth", "AI Enablement Team"),
+    ("Assess **strategic alignment** and data maturity", "AI Enablement Team"),
+    ("**Confirm resource availability** across AI Forward Engineers", "AI Enablement Team"),
+    ("Prioritize **top 1\u20132 use cases** per champion for development", "AI Enablement Team"),
 ], 3)
 
 add_gate(doc, "RELEASE GATE", "Approved to proceed?  Yes \u2192 continue to build   |   No \u2192 return to ideation")
@@ -392,36 +346,30 @@ add_gate(doc, "RELEASE GATE", "Approved to proceed?  Yes \u2192 continue to buil
 doc.add_page_break()
 
 # ============================================================
-# STEP 4: Project Setup & Resource Allocation
+# STEP 4
 # ============================================================
 add_step_heading(doc, 4, "Project Setup & Resource Allocation", "Setup")
 
-p = doc.add_paragraph()
-run = p.add_run("Three parallel workstreams kick off simultaneously:")
-run.font.size = Pt(10)
-run.font.color.rgb = GRAY
-run.italic = True
-
 add_task_table(doc, [
-    ("**Asset Register** \u2014 Model the AI solution into asset register", "AI Lab Mgmt"),
-    ("**Set Up Jira** \u2014 Create project, epics, stories & sprint backlog", "Program Manager"),
-    ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Lab Mgmt"),
-    ("Establish **weekly checkpoint** cadence", "Program Manager"),
-    ("Identify **point of contact** and confirm Business Sponsor", "Program Manager"),
+    ("**Asset Register** \u2014 Model the AI solution into asset register (MP and above)", "Business Sponsor"),
+    ("**Set Up Jira** \u2014 Create project, epics, stories & sprint backlog", "AI Enablement Team"),
+    ("**Allocate Resources** \u2014 Assign AI Forward Engineers via Retain", "AI Enablement Team"),
+    ("**Set up healthy check-in cadence** \u2014 demo \u2192 feedback \u2192 refine cycles (keep AI Enablement in the loop)", "AI Champion + AI Fwd Engineer"),
 ], 4)
 
 doc.add_page_break()
 
 # ============================================================
-# STEP 5: Define the MVP & Build
+# STEP 5
 # ============================================================
 add_step_heading(doc, 5, "Define the MVP & Build", "Build")
 
 add_task_table(doc, [
-    ("**Define MVP scope** \u2014 features, demo expectations & success criteria", "AI Fwd Engineer + Sponsor"),
-    ("Develop through **sprint cycles** with iterative testing", "AI Forward Engineer"),
-    ("Build **demo environment** with real-world scenarios", "AI Forward Engineer"),
-    ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "Program Manager"),
+    ("**Define MVP scope** \u2014 features, demo expectations & success criteria", "AI Fwd Engineer + AI Champion"),
+    ("Develop through **sprint cycles** with iterative testing & user feedback", "AI Forward Engineer"),
+    ("Provide **sample data & real-life use case scenarios** to guide the build", "AI Champion"),
+    ("Build **demo environment** based on provided scenarios & data", "AI Forward Engineer"),
+    ("Track: Backlog \u2192 Build In-Progress \u2192 **MVP Demo Complete**", "AI Enablement Team"),
 ], 5)
 
 add_gate(doc,
@@ -432,16 +380,16 @@ add_gate(doc,
 doc.add_page_break()
 
 # ============================================================
-# STEP 6: GTM Ready
+# STEP 6
 # ============================================================
 add_step_heading(doc, 6, "GTM Ready \u2014 Package the Solution", "GTM Ready")
 
 add_task_table(doc, [
-    ("Finalize **demo script** and conduct full run-throughs", "AI Fwd Engineer + Champion"),
+    ("Prepare **demo materials**: demo script, mock data & demo video recording", "AI Fwd Engineer + AI Champion"),
+    ("Finalize **demo script** and conduct full run-throughs", "AI Fwd Engineer + AI Champion"),
     ('Prepare **"AI vs. Non-AI" talk track** (competitive differentiation)', "AI Champion + Sales"),
     ("Create **one-pager**, pricing template & engagement model", "Domain Leader + Sales"),
-    ("Map **target accounts & buyer personas**", "Sales"),
-    ("Register in **Global Demo Catalog** with domain mapping", "Program Manager"),
+    ("Map **target accounts & buyer personas**; register in Demo Catalog", "Sales + AI Enablement Team"),
 ], 6)
 
 # Deliverables callout
@@ -450,39 +398,37 @@ run = p.add_run("Deliverables checklist: ")
 run.bold = True
 run.font.size = Pt(10)
 run.font.color.rgb = COLORS[6]
-run = p.add_run("Polished demo  |  One-pager  |  Talk track  |  Pricing template  |  Target account list  |  Backlog reference")
+run = p.add_run("Polished demo  |  Demo script  |  Mock data  |  Demo video  |  One-pager  |  Talk track  |  Pricing template  |  Target account list")
 run.font.size = Pt(10)
 run.font.color.rgb = GRAY
 
 doc.add_page_break()
 
 # ============================================================
-# STEP 7: GTM Push
+# STEP 7
 # ============================================================
 add_step_heading(doc, 7, "GTM Push \u2014 Showcase & Sales Activation", "Go-To-Market")
 
 add_task_table(doc, [
-    ("Schedule **AI Capability Showcases** (bi-weekly, rotating facilitator)", "Domain Leader"),
+    ("**AI Capability Showcases** (bi-weekly) \u2014 all AI Power Team members should attend", "All AI Power Team"),
     ("Run **Sales Activations** targeting specific accounts", "Sales + Account Partner"),
-    ("Form **Sprint Pods** for active pursuit opportunities", "Cross-functional"),
-    ("Present to clients and gather real-time feedback", "AI Champion + Presenter"),
-    ("Assign **follow-up actions** with owners and due dates", "Program Manager"),
-    ("Send **bi-weekly Showcase Communications** to the org", "Program Manager"),
+    ("Assign **follow-up actions** with owners and due dates", "AI Champion"),
+    ("**Assemble GTM Folder**: demo video, demo script, sales one-slider & sales deck", "AI Enablement Team"),
+    ("**Publish to Capco MarketHub & AI Lab** to reach a larger audience", "AI Enablement Team"),
 ], 7)
 
 doc.add_page_break()
 
 # ============================================================
-# STEP 8: Track Results
+# STEP 8
 # ============================================================
 add_step_heading(doc, 8, "Track Results & Continuous Improvement", "Measure")
 
 add_task_table(doc, [
-    ("Track **CTAR results** and revenue metrics per solution", "Program Manager"),
-    ("Monitor maturity: Idea \u2192 In Build \u2192 Demo-Ready \u2192 GTM-Ready \u2192 **In Pursuit**", "AI Lab Leadership"),
-    ("Capture **client feedback** and feature requests", "AI Champion"),
-    ("Feed learnings back into **next intake cycle** (Step 1)", "AI Champion + Domain Leader"),
-    ("Identify **AI Infusion** opportunities in existing engagements", "Account Partner"),
+    ("Track **CTAR** (Client Target Account Revenue): pipeline generated, deals won, revenue attributed to each AI solution", "AI Enablement + AI Champion + Sponsor"),
+    ("Monitor **revenue metrics per solution**: total pipeline value, win rate, average deal size & time-to-close", "AI Enablement + Business Sponsor"),
+    ("Monitor maturity: Idea \u2192 In Build \u2192 Demo-Ready \u2192 GTM-Ready \u2192 **In Pursuit**", "AI Enablement Team"),
+    ("Capture **client feedback** & feed learnings back into next intake cycle", "AI Champion + Domain Leader"),
 ], 8)
 
 # Continuous loop callout

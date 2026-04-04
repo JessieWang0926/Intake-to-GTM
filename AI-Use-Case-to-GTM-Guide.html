@@ -190,14 +190,13 @@
   }
   .role.lead       { background: rgba(37,99,235,0.15); color: #93c5fd; }
   .role.champion   { background: rgba(16,185,129,0.15); color: #6ee7b7; }
-  .role.lab        { background: rgba(249,115,22,0.15); color: #fdba74; }
+  .role.enablement { background: rgba(249,115,22,0.15); color: #fdba74; }
   .role.sponsor    { background: rgba(244,63,94,0.15); color: #fda4af; }
   .role.engineer   { background: rgba(139,92,246,0.15); color: #c4b5fd; }
-  .role.pm         { background: rgba(6,182,212,0.15); color: #67e8f9; }
   .role.domain     { background: rgba(245,158,11,0.15); color: #fcd34d; }
   .role.sales      { background: rgba(20,184,166,0.15); color: #5eead4; }
   .role.governance { background: rgba(244,63,94,0.15); color: #fda4af; }
-  .role.collab     { background: rgba(156,163,175,0.12); color: #9ca3af; }
+  .role.all        { background: rgba(96,165,250,0.15); color: #93c5fd; }
 
   .roles-cell {
     display: flex;
@@ -273,7 +272,7 @@
 <div class="page">
 
   <div class="header">
-    <div class="org-badge">Global GenAI Lab</div>
+    <div class="org-badge">AI Power Team</div>
     <h1>From <span>Use Case</span> to <span>Go-To-Market</span></h1>
     <p class="subtitle">8 steps from ideation to launch &mdash; who does what at every stage</p>
   </div>
@@ -291,15 +290,11 @@
         <div class="roles-cell"><span class="role lead">Practice Lead</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text"><strong>Domain Partner elects an AI Champion</strong> to own use case ideation for the practice</div>
-        <div class="roles-cell"><span class="role domain">Domain Partner</span></div>
-      </div>
-      <div class="task-row">
         <div class="task-text">Brainstorm from in-flight projects, client conversations &amp; market demand</div>
         <div class="roles-cell"><span class="role champion">AI Champion</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Check <strong>Global Demo Catalog</strong> (79+ solutions, 10 domains) to avoid duplication</div>
+        <div class="task-text">Check <strong>Demo Catalog</strong> (79+ solutions, 10 domains) to avoid duplication. Interested in a solution? <strong>Request a demo directly with the Product Owner</strong></div>
         <div class="roles-cell"><span class="role champion">AI Champion</span></div>
       </div>
     </div>
@@ -340,25 +335,25 @@
   <div class="step c-amber">
     <div class="step-top">
       <div class="step-num">3</div>
-      <div class="step-title">AI Lab Management Review</div>
+      <div class="step-title">AI Enablement Team Review</div>
       <div class="phase-tag">Assessment</div>
     </div>
     <div class="tasks">
       <div class="task-row">
         <div class="task-text">Determine project scope: <strong>POC / MVP / Full Build</strong> based on business value &amp; tech depth</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Leadership</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Assess strategic alignment, data maturity &amp; regulatory impact</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Leadership</span><span class="role sponsor">Business Sponsor</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Confirm resource availability &amp; obtain Business Sponsor sign-off</div>
-        <div class="roles-cell"><span class="role sponsor">Business Sponsor</span></div>
+        <div class="task-text"><strong>Confirm resource availability</strong> across AI Forward Engineers</div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Prioritize <strong>top 1&ndash;2 use cases</strong> per champion for development</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Leadership</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
     </div>
   </div>
@@ -379,20 +374,20 @@
     </div>
     <div class="tasks">
       <div class="task-row">
-        <div class="task-text"><strong>Asset Register</strong> &mdash; Model the AI solution into asset register</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Mgmt</span></div>
+        <div class="task-text"><strong>Asset Register</strong> &mdash; Model the AI solution into asset register (MP and above)</div>
+        <div class="roles-cell"><span class="role sponsor">Business Sponsor</span></div>
       </div>
       <div class="task-row">
         <div class="task-text"><strong>Set Up Jira</strong> &mdash; Create project, epics, stories &amp; sprint backlog</div>
-        <div class="roles-cell"><span class="role pm">Program Manager</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
         <div class="task-text"><strong>Allocate Resources</strong> &mdash; Assign AI Forward Engineers via Retain</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Mgmt</span><span class="role engineer">AI Fwd Engineer</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Establish weekly checkpoint cadence &amp; identify point of contact</div>
-        <div class="roles-cell"><span class="role pm">Program Manager</span></div>
+        <div class="task-text"><strong>Set up healthy check-in cadence</strong> &mdash; demo &rarr; feedback &rarr; refine cycles (keep AI Enablement in the loop)</div>
+        <div class="roles-cell"><span class="role champion">AI Champion</span><span class="role engineer">AI Fwd Engineer</span></div>
       </div>
     </div>
   </div>
@@ -409,19 +404,23 @@
     <div class="tasks">
       <div class="task-row">
         <div class="task-text"><strong>Define MVP scope</strong> &mdash; features, demo expectations &amp; success criteria</div>
-        <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span><span class="role sponsor">Business Sponsor</span></div>
+        <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span><span class="role champion">AI Champion</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Develop through <strong>sprint cycles</strong> with iterative testing &amp; user feedback</div>
         <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Build demo environment with real-world scenarios &amp; sample data</div>
+        <div class="task-text">Provide <strong>sample data &amp; real-life use case scenarios</strong> to guide the build</div>
+        <div class="roles-cell"><span class="role champion">AI Champion</span></div>
+      </div>
+      <div class="task-row">
+        <div class="task-text">Build <strong>demo environment</strong> based on provided scenarios &amp; data</div>
         <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Track: Backlog &rarr; Build In-Progress &rarr; MVP Demo Complete</div>
-        <div class="roles-cell"><span class="role pm">Program Manager</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
     </div>
   </div>
@@ -442,6 +441,10 @@
     </div>
     <div class="tasks">
       <div class="task-row">
+        <div class="task-text">Prepare <strong>demo materials</strong>: demo script, mock data &amp; demo video recording</div>
+        <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span><span class="role champion">AI Champion</span></div>
+      </div>
+      <div class="task-row">
         <div class="task-text">Finalize <strong>demo script</strong> and conduct full run-throughs</div>
         <div class="roles-cell"><span class="role engineer">AI Fwd Engineer</span><span class="role champion">AI Champion</span></div>
       </div>
@@ -454,8 +457,8 @@
         <div class="roles-cell"><span class="role domain">Domain Leader</span><span class="role sales">Sales</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Map <strong>target accounts &amp; buyer personas</strong>; register in Global Demo Catalog</div>
-        <div class="roles-cell"><span class="role sales">Sales</span><span class="role pm">Program Manager</span></div>
+        <div class="task-text">Map <strong>target accounts &amp; buyer personas</strong>; register in Demo Catalog</div>
+        <div class="roles-cell"><span class="role sales">Sales</span><span class="role enablement">AI Enablement Team</span></div>
       </div>
     </div>
   </div>
@@ -471,20 +474,24 @@
     </div>
     <div class="tasks">
       <div class="task-row">
-        <div class="task-text">Schedule <strong>AI Capability Showcases</strong> (bi-weekly, rotating facilitator)</div>
-        <div class="roles-cell"><span class="role domain">Domain Leader</span></div>
+        <div class="task-text"><strong>AI Capability Showcases</strong> (bi-weekly) &mdash; all AI Power Team members should attend</div>
+        <div class="roles-cell"><span class="role all">All AI Power Team</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Run <strong>Sales Activations</strong> targeting specific accounts</div>
         <div class="roles-cell"><span class="role sales">Sales</span><span class="role lead">Account Partner</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Form <strong>Sprint Pods</strong> for active pursuit opportunities</div>
-        <div class="roles-cell"><span class="role collab">Cross-functional</span></div>
+        <div class="task-text">Assign <strong>follow-up actions</strong> with owners and due dates</div>
+        <div class="roles-cell"><span class="role champion">AI Champion</span></div>
       </div>
       <div class="task-row">
-        <div class="task-text">Assign <strong>follow-up actions</strong> with owners and due dates</div>
-        <div class="roles-cell"><span class="role pm">Program Manager</span></div>
+        <div class="task-text"><strong>Assemble GTM Folder</strong>: demo video, demo script, sales one-slider &amp; sales deck</div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
+      </div>
+      <div class="task-row">
+        <div class="task-text"><strong>Publish to Capco MarketHub &amp; AI Lab</strong> to reach a larger audience</div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
     </div>
   </div>
@@ -500,12 +507,16 @@
     </div>
     <div class="tasks">
       <div class="task-row">
-        <div class="task-text">Track <strong>CTAR results</strong> and revenue metrics per solution</div>
-        <div class="roles-cell"><span class="role pm">Program Manager</span></div>
+        <div class="task-text">Track <strong>CTAR</strong> (Client Target Account Revenue): pipeline generated, deals won, revenue attributed to each AI solution</div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span><span class="role champion">AI Champion</span><span class="role sponsor">Business Sponsor</span></div>
+      </div>
+      <div class="task-row">
+        <div class="task-text">Monitor <strong>revenue metrics per solution</strong>: total pipeline value, win rate, average deal size &amp; time-to-close</div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span><span class="role sponsor">Business Sponsor</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Monitor maturity: Idea &rarr; In Build &rarr; Demo-Ready &rarr; GTM-Ready &rarr; In Pursuit</div>
-        <div class="roles-cell"><span class="role lab">AI Lab Leadership</span></div>
+        <div class="roles-cell"><span class="role enablement">AI Enablement Team</span></div>
       </div>
       <div class="task-row">
         <div class="task-text">Capture client feedback &amp; feed learnings back into <strong>next intake cycle</strong></div>
@@ -520,17 +531,16 @@
     <span class="role lead">Practice Lead</span>
     <span class="role domain">Domain Partner / Leader</span>
     <span class="role champion">AI Champion</span>
-    <span class="role lab">AI Lab Leadership</span>
+    <span class="role enablement">AI Enablement Team</span>
     <span class="role sponsor">Business Sponsor</span>
     <span class="role engineer">AI Forward Engineer</span>
-    <span class="role pm">Program Manager</span>
     <span class="role sales">Sales</span>
     <span class="role governance">Governance (CRO/CDO/Compliance)</span>
-    <span class="role collab">Cross-functional</span>
+    <span class="role all">All AI Power Team</span>
   </div>
 
   <div class="footer">
-    Global GenAI Lab &mdash; AI Use Case Intake to Go-To-Market Guide
+    AI Power Team &mdash; AI Use Case Intake to Go-To-Market Guide
   </div>
 
 </div>
