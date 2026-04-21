@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Use Case to Go-To-Market: Step-by-Step Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 36px 60px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 44px;
+    padding-bottom: 28px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  .header .org-badge {
+    display: inline-block;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1a1a2e;
+    letter-spacing: -0.8px;
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 400;
+  }
+
+  /* Flow connector */
+  .flow-down {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+  }
+  .flow-down .arrow {
+    width: 1px;
+    height: 24px;
+    background: #d1d5db;
+    position: relative;
+  }
+  .flow-down .arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #d1d5db;
+  }
+
+  /* Step Card */
+  .step {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 22px 24px 20px;
+    background: #fff;
+    position: relative;
+    border-left: 4px solid;
+  }
+
+  .step.c1 { border-left-color: #2563eb; }
+  .step.c2 { border-left-color: #059669; }
+  .step.c3 { border-left-color: #d97706; }
+  .step.c4 { border-left-color: #dc2626; }
+  .step.c5 { border-left-color: #7c3aed; }
+  .step.c6 { border-left-color: #0891b2; }
+  .step.c7 { border-left-color: #ea580c; }
+  .step.c8 { border-left-color: #0d9488; }
+
+  /* Step header */
+  .step-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+  }
+  .c1 .step-num { background: #2563eb; }
+  .c2 .step-num { background: #059669; }
+  .c3 .step-num { background: #d97706; }
+  .c4 .step-num { background: #dc2626; }
+  .c5 .step-num { background: #7c3aed; }
+  .c6 .step-num { background: #0891b2; }
+  .c7 .step-num { background: #ea580c; }
+  .c8 .step-num { background: #0d9488; }
+
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    flex: 1;
+  }
+  .phase-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: #f3f4f6;
+    color: #6b7280;
+  }
+
+  /* Task table */
+  .tasks {
+    margin-left: 44px;
+    border-collapse: collapse;
+    width: calc(100% - 44px);
+    font-size: 12.5px;
+  }
+  .tasks tr { border-bottom: 1px solid #f3f4f6; }
+  .tasks tr:last-child { border-bottom: none; }
+  .tasks td {
+    padding: 6px 8px;
+    vertical-align: top;
+    line-height: 1.5;
+    color: #374151;
+  }
+  .tasks td:first-child { width: auto; }
+  .tasks td:last-child {
+    text-align: right;
+    white-space: nowrap;
+    min-width: 140px;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 11px;
+  }
+  .tasks td strong { color: #1a1a2e; font-weight: 600; }
+  .tasks a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .tasks a:hover { text-decoration: underline; }
+
+  /* Role pills */
+  .owner {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 2px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Decision gate */
+  .gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 10px 0;
+  }
+  .gate-line {
+    flex: 1;
+    height: 1px;
+    max-width: 100px;
+    background: #d1d5db;
+  }
+  .gate-box {
+    padding: 8px 22px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.3px;
+    color: #92400e;
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+  }
+  .gate-box.govern {
+    color: #991b1b;
+    background: #fee2e2;
+    border-color: #fca5a5;
+  }
+  .gate-box small {
+    display: block;
+    font-weight: 400;
+    font-size: 10px;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+
+  /* Role legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    padding: 18px 0 10px;
+    margin-top: 28px;
+    border-top: 1px solid #e5e7eb;
+  }
+  .legend-title {
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 4px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 10px;
+    color: #9ca3af;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="org-badge">AI Power Team</div>
+    <h1>From Use Case to Go-To-Market</h1>
+    <p class="subtitle">8 steps from ideation to launch &mdash; who does what at every stage</p>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step c1">
+    <div class="step-top">
+      <div class="step-num">1</div>
+      <div class="step-title">Identify & Generate AI Use Cases</div>
+      <div class="phase-tag">Ideation</div>
+    </div>
+    <table class="tasks">
+      <tr><td>Identify client pain points and market gaps</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td>Brainstorm from in-flight projects, client conversations, and market demand; consult with domain SMEs as needed</td><td><span class="owner">AI Champion</span> <span class="owner">Domain Leader</span></td></tr>
+      <tr><td>Review the <a href="https://capcoinc.sharepoint.com/:x:/r/sites/USGenAI/Shared%20Documents/General/AI%20Enablement%20Program/AI%20Use-Case%20Intake.xlsx?d=w28b0c42db1524ec08c123dc9a5d5a43b&amp;csf=1&amp;web=1&amp;e=1iAxnc" target="_blank" rel="noopener noreferrer">Demo Catalog</a> tab to avoid duplication. Interested in an existing solution? Request a demo directly with the Product Owner.</td><td><span class="owner">AI Champion</span></td></tr>
+    </table>
+  </div>
+
+  <div class="flow-down"><div class="arrow"></div></div>
+
+  <!-- STEP 2 -->
+  <div class="step c2">
+    <div class="step-top">
+      <div class="step-num">2</div>
+      <div class="step-title">Submit Use Case Intake</div>
+      <div class="phase-tag">Intake</div>
+    </div>
+    <table class="tasks">
+      <tr><td>Complete <a href="https://capcoinc.sharepoint.com/:x:/r/sites/USGenAI/_layouts/15/Doc.aspx?sourcedoc=%7B28B0C42D-B152-4EC0-8C12-3DC9A5D5A43B%7D&amp;file=AI%20Use-Case%20Intake.xlsx&amp;action=default&amp;mobileredirect=true" target="_blank" rel="noopener noreferrer">AI Use Case Intake Form - Workbook A</a> and <a href="https://capcoinc-my.sharepoint.com/:x:/r/personal/mahdi_chowdhury_capco_com/_layouts/15/Doc.aspx?sourcedoc=%7B0DB609B7-1F9F-404F-896F-EE78F475BE3A%7D&amp;file=AI%20Champions%20Workbook%20B%20-%20AI%20Infusion%20Intake.xlsx&amp;action=default&amp;mobileredirect=true" target="_blank" rel="noopener noreferrer">AI Champions Workbook B - AI Infusion Intake</a> (one row per use case)</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td>Answer <strong>4 Core Questions</strong>: What pain? Who feels it? Why it matters? Why unsolved?</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td>Provide: title, practice, persona, business value, revenue potential, target accounts</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td>Assign priority: <strong>High</strong>, <strong>Medium</strong>, or <strong>Low</strong> based on market potential, expected revenue impact, and <strong>how much it is going to sell?</strong></td><td><span class="owner">AI Champion</span></td></tr>
+    </table>
+  </div>
+
+  <div class="flow-down"><div class="arrow"></div></div>
+
+  <!-- STEP 3 -->
+  <div class="step c3">
+    <div class="step-top">
+      <div class="step-num">3</div>
+      <div class="step-title">AI Enablement Team Review</div>
+      <div class="phase-tag">Assessment</div>
+    </div>
+    <table class="tasks">
+      <tr><td><strong>Evaluate use case</strong> based on technical complexity and feasibility</td><td><span class="owner">AI Enablement Team</span></td></tr>
+      <tr><td>Assess the availability of sample data and key AI governance considerations</td><td><span class="owner">AI Enablement Team</span> <span class="owner">AI Champion</span></td></tr>
+      <tr><td><strong>Assign a developer</strong> for the priority use case</td><td><span class="owner">AI Enablement Team</span></td></tr>
+    </table>
+  </div>
+
+  <!-- RELEASE GATE -->
+  <div class="gate">
+    <div class="gate-line"></div>
+    <div class="gate-box">BUILD GATE<small>Approved? Yes: proceed &nbsp;|&nbsp; No: back to ideation</small></div>
+    <div class="gate-line"></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step c4">
+    <div class="step-top">
+      <div class="step-num">4</div>
+      <div class="step-title">Project Setup & Resource Allocation</div>
+      <div class="phase-tag">Setup</div>
+    </div>
+    <table class="tasks">
+      <tr><td><a href="https://capcoinc-my.sharepoint.com/personal/mickael_sylla_capco_com/_layouts/15/listforms.aspx?cid=ZmIyYTQ5NjAtMDI5ZC00MDRhLThiZDgtY2E3YjExZGQ4Nzhj&amp;nav=N2QzZjg5MmMtMzgwNy00N2JlLWJjYWUtOGIwY2I5Y2YwMGI0" target="_blank" rel="noopener noreferrer">Asset Registry</a> &mdash; Model the AI solution in the asset registry (MP and above)</td><td><span class="owner">Business Sponsor</span></td></tr>
+      <tr><td><strong>Set Up Jira &amp; Project Folder</strong> &mdash; Create Jira project and project folder structure (epics, stories &amp; backlog defined during build)</td><td><span class="owner">AI Enablement Team</span></td></tr>
+      <tr><td><strong>Allocate Resources</strong> &mdash; Assign AI Forward Engineers</td><td><span class="owner">AI Enablement Team</span></td></tr>
+      <tr><td><strong>Set up healthy check-in cadence</strong> &mdash; demo &rarr; feedback &rarr; refine cycles (keep AI Enablement in the loop)</td><td><span class="owner">AI Champion</span> <span class="owner">AI Fwd Engineer</span></td></tr>
+    </table>
+  </div>
+
+  <div class="flow-down"><div class="arrow"></div></div>
+
+  <!-- STEP 5 -->
+  <div class="step c5">
+    <div class="step-top">
+      <div class="step-num">5</div>
+      <div class="step-title">Define the MVP & Build</div>
+      <div class="phase-tag">Build</div>
+    </div>
+    <table class="tasks">
+      <tr><td><strong>Define MVP scope</strong> &mdash; features, demo expectations &amp; success criteria</td><td><span class="owner">AI Fwd Engineer</span> <span class="owner">AI Champion</span></td></tr>
+      <tr><td>Develop through <strong>sprint cycles</strong> with iterative testing &amp; user feedback</td><td><span class="owner">AI Fwd Engineer</span> <span class="owner">AI Enablement Team</span> <span class="owner">AI Champion</span></td></tr>
+      <tr><td>Provide <strong>sample data &amp; real-life use case scenarios</strong> to guide the build</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td>Build <strong>demo environment</strong> based on provided scenarios &amp; data</td><td><span class="owner">AI Fwd Engineer</span></td></tr>
+      <tr><td>Track: Backlog &rarr; Build In-Progress &rarr; MVP Demo Complete</td><td><span class="owner">AI Enablement Team</span></td></tr>
+      <tr><td>Complete the <strong>risk assessment</strong></td><td><span class="owner">AI Fwd Engineer</span></td></tr>
+      <tr><td>Present solution on the <strong>Governance Call</strong> &mdash; explain the solution and walk through the architecture</td><td><span class="owner">AI Fwd Engineer</span></td></tr>
+    </table>
+  </div>
+
+  <!-- GOVERNANCE GATE -->
+  <div class="gate">
+    <div class="gate-line"></div>
+    <div class="gate-box govern">GOVERNANCE GATE<small>AI Governance &bull; Compliance &bull; Data Security &bull; Model Risk</small></div>
+    <div class="gate-line"></div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step c6">
+    <div class="step-top">
+      <div class="step-num">6</div>
+      <div class="step-title">GTM Ready &mdash; Package the Solution</div>
+      <div class="phase-tag">GTM Ready</div>
+    </div>
+    <table class="tasks">
+      <tr><td>Prepare <strong>demo materials</strong>: demo script, mock data &amp; demo video recording</td><td><span class="owner">AI Fwd Engineer</span> <span class="owner">AI Champion</span></td></tr>
+      <tr><td>Finalize <strong>demo script</strong> and conduct full run-throughs</td><td><span class="owner">AI Fwd Engineer</span> <span class="owner">AI Champion</span></td></tr>
+      <tr><td>Prepare <strong>&ldquo;AI vs. Non-AI&rdquo; talk track</strong> (1&ndash;2 lines of competitive differentiation)</td><td><span class="owner">AI Champion</span> <span class="owner">Sales</span></td></tr>
+      <tr><td>Create <strong>one-pager</strong> and marketing materials</td><td><span class="owner">Domain Leader</span> <span class="owner">Sales</span></td></tr>
+      <tr><td>Map <strong>target accounts &amp; buyer personas</strong>; register in Demo Catalog</td><td><span class="owner">Sales</span> <span class="owner">AI Enablement Team</span></td></tr>
+    </table>
+  </div>
+
+  <div class="flow-down"><div class="arrow"></div></div>
+
+  <!-- STEP 7 -->
+  <div class="step c7">
+    <div class="step-top">
+      <div class="step-num">7</div>
+      <div class="step-title">GTM Push &mdash; Showcase & Sales Activation</div>
+      <div class="phase-tag">Go-To-Market</div>
+    </div>
+    <table class="tasks">
+      <tr><td><strong>AI Capability Showcases</strong> (bi-weekly) &mdash; all AI Power Team members should attend</td><td><span class="owner">All AI Power Team</span></td></tr>
+      <tr><td>Run <strong>Sales Activations</strong> targeting specific accounts</td><td><span class="owner">Sales</span> <span class="owner">Account Partner</span></td></tr>
+      <tr><td>Assign <strong>follow-up actions</strong> with owners and due dates</td><td><span class="owner">AI Champion</span></td></tr>
+      <tr><td><strong>Assemble GTM Folder</strong>: demo video, demo script, sales one-slider &amp; sales deck</td><td><span class="owner">AI Enablement Team</span></td></tr>
+      <tr><td><strong>Publish to <a href="https://capcoinc.sharepoint.com/sites/MarketHub/SitePages/Campaign-Overview---GenAI.aspx?xsdata=MDV8MDJ8fDFiZmEyZGQzZTk5MTRlNTliNDA5MDhkZTBiNDk3YTJmfDliYWMzOWRjYTdhYjRhMjA5YThiODg1YzYyMzViNmM1fDB8MHw2Mzg5NjA2MDczNDM2NTM4OTd8VW5rbm93bnxWR1ZoYlhOVFpXTjFjbWwwZVZObGNuWnBZMlY4ZXlKRFFTSTZJbFJsWVcxelgwRlVVRk5sY25acFkyVmZVMUJQVEU5R0lpd2lWaUk2SWpBdU1DNHdNREF3SWl3aVVDSTZJbGRwYmpNeUlpd2lRVTRpT2lKUGRHaGxjaUlzSWxkVUlqb3hNWDA9fDF8TDJOb1lYUnpMekU1T21ZeVl6TXdPVFl3TW1FME9UUTNOemxpT1ROa1pqVXdNMkV3WXpjNU1tVTBRSFJvY21WaFpDNTJNaTl0WlhOellXZGxjeTh4TnpZd05EWXpPVE16TlRReXwyNWVkNGNhZjU1YjI0YjI3MTc1YTA4ZGUwYjQ5N2EyZnwzZTBmMGFjMTRlNjM0NWFhOTRhODQ2ZGMxYjY5OTMzOA%3D%3D&amp;sdata=elNZVHFwUUNFNDkvQkdjRmxnbEllcHFjanJkb1hZS2xERFQ2WXhlQ2RjVT0%3D&amp;ovuser=9bac39dc-a7ab-4a20-9a8b-885c6235b6c5%2CJessie.Wang%40capco.com&amp;OR=Teams-HL&amp;CT=1760464707567&amp;clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiI1MC8yNTA5MTExNjAxNSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D" target="_blank" rel="noopener noreferrer">Capco MarketHub</a> &amp; <a href="https://ai-lab.capco.io/" target="_blank" rel="noopener noreferrer">AI Lab</a></strong> to reach a larger audience</td><td><span class="owner">AI Enablement Team</span></td></tr>
+    </table>
+  </div>
+
+  <div class="flow-down"><div class="arrow"></div></div>
+
+  <!-- STEP 8 -->
+  <div class="step c8">
+    <div class="step-top">
+      <div class="step-num">8</div>
+      <div class="step-title">Track Results & Continuous Improvement</div>
+      <div class="phase-tag">Measure</div>
+    </div>
+    <table class="tasks">
+      <tr><td>Track <strong>CTAR</strong> (Client Target Account Revenue): pipeline generated, deals won, revenue attributed to each AI solution</td><td><span class="owner">AI Enablement Team</span> <span class="owner">AI Champion</span> <span class="owner">Business Sponsor</span></td></tr>
+      <tr><td>Capture client feedback &amp; feed learnings back into <strong>next intake cycle</strong></td><td><span class="owner">AI Champion</span> <span class="owner">Domain Leader</span> <span class="owner">AI Enablement Team</span></td></tr>
+    </table>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">Role Legend</div>
+    <span class="owner">Domain Leader</span>
+    <span class="owner">AI Champion</span>
+    <span class="owner">AI Enablement Team</span>
+    <span class="owner">Business Sponsor</span>
+    <span class="owner">AI Forward Engineer</span>
+    <span class="owner">Sales</span>
+    <span class="owner">Account Partner</span>
+  </div>
+
+  <div class="footer">AI Power Team &mdash; AI Use Case Intake to Go-To-Market Guide</div>
+
+</div>
+</body>
+</html>
